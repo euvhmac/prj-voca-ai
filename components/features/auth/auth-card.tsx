@@ -106,114 +106,26 @@ export function AuthCard({ error }: AuthCardProps) {
         </button>
       </div>
 
-      {/* Formulário — Email + Senha (placeholder visual para MVP OAuth) */}
-      <div className="flex flex-col gap-4 mb-6">
-        {tab === 'register' && (
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="name"
-              className="text-[12.5px] font-medium block"
-              style={{ fontFamily: 'var(--font-dm-sans)', color: '#374151' }}
-            >
-              Nome completo
-            </label>
-            <input
-              id="name"
-              type="text"
-              autoComplete="name"
-              placeholder="Seu nome"
-              disabled
-              className="w-full px-3.5 py-2.5 border rounded-[8px] text-sm outline-none transition-[border-color,box-shadow] disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{
-                fontFamily: 'var(--font-dm-sans)',
-                borderColor: '#e5e7eb',
-                color: '#111827',
-                backgroundColor: '#ffffff',
-              }}
-              aria-describedby="name-hint"
-            />
-          </div>
-        )}
-
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="email"
-            className="text-[12.5px] font-medium block"
-            style={{ fontFamily: 'var(--font-dm-sans)', color: '#374151' }}
-          >
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            placeholder="seu@email.com"
-            disabled
-            className="w-full px-3.5 py-2.5 border rounded-[8px] text-sm outline-none transition-[border-color,box-shadow] disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{
-              fontFamily: 'var(--font-dm-sans)',
-              borderColor: '#e5e7eb',
-              color: '#111827',
-              backgroundColor: '#ffffff',
-            }}
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="password"
-            className="text-[12.5px] font-medium block"
-            style={{ fontFamily: 'var(--font-dm-sans)', color: '#374151' }}
-          >
-            Senha
-          </label>
-          <input
-            id="password"
-            type="password"
-            autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
-            placeholder="••••••••"
-            disabled
-            className="w-full px-3.5 py-2.5 border rounded-[8px] text-sm outline-none transition-[border-color,box-shadow] disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{
-              fontFamily: 'var(--font-dm-sans)',
-              borderColor: '#e5e7eb',
-              color: '#111827',
-              backgroundColor: '#ffffff',
-            }}
-          />
-        </div>
-
-        {tab === 'register' && (
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="confirm-password"
-              className="text-[12.5px] font-medium block"
-              style={{ fontFamily: 'var(--font-dm-sans)', color: '#374151' }}
-            >
-              Confirmar senha
-            </label>
-            <input
-              id="confirm-password"
-              type="password"
-              autoComplete="new-password"
-              placeholder="••••••••"
-              disabled
-              className="w-full px-3.5 py-2.5 border rounded-[8px] text-sm outline-none transition-[border-color,box-shadow] disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{
-                fontFamily: 'var(--font-dm-sans)',
-                borderColor: '#e5e7eb',
-                color: '#111827',
-                backgroundColor: '#ffffff',
-              }}
-            />
-          </div>
-        )}
-
+      {/* Mensagem contextual por tab */}
+      <div
+        className="flex items-start gap-3 px-4 py-3 rounded-[10px] mb-6"
+        style={{
+          backgroundColor: 'rgba(74,222,128,0.06)',
+          border: '1px solid rgba(74,222,128,0.15)',
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="mt-0.5 flex-shrink-0">
+          <circle cx="8" cy="8" r="6.5" stroke="#4ade80" strokeWidth="1.2" />
+          <path d="M8 5.5V8.5" stroke="#4ade80" strokeWidth="1.3" strokeLinecap="round" />
+          <circle cx="8" cy="10.5" r="0.65" fill="#4ade80" />
+        </svg>
         <p
-          className="text-[11.5px] -mt-1"
-          style={{ fontFamily: 'var(--font-dm-sans)', color: '#9ca3af' }}
+          className="text-[12.5px] leading-relaxed"
+          style={{ fontFamily: 'var(--font-dm-sans)', color: '#374151' }}
         >
-          Login por email disponível em breve. Use os provedores abaixo.
+          {tab === 'login'
+            ? 'Clique em um dos provedores abaixo para entrar na sua conta.'
+            : 'Sem cadastro necessário. Na primeira vez que entrar com Google ou LinkedIn, sua conta é criada automaticamente.'}
         </p>
       </div>
 
