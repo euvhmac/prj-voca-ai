@@ -48,17 +48,9 @@ export function UploadZone({ onFile, error }: UploadZoneProps) {
 
   return (
     <div className="w-full flex flex-col gap-3">
-      <div
-        role="button"
-        tabIndex={0}
+      <label
+        htmlFor="audio-upload"
         aria-label="Área de upload de áudio. Clique ou arraste um arquivo."
-        onClick={() => inputRef.current?.click()}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            inputRef.current?.click();
-          }
-        }}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -154,6 +146,7 @@ export function UploadZone({ onFile, error }: UploadZoneProps) {
 
         <input
           ref={inputRef}
+          id="audio-upload"
           type="file"
           accept={ACCEPTED}
           onChange={handleInputChange}
@@ -161,7 +154,7 @@ export function UploadZone({ onFile, error }: UploadZoneProps) {
           aria-hidden="true"
           tabIndex={-1}
         />
-      </div>
+      </label>
 
       {/* Validation error */}
       {error && (
