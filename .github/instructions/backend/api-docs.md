@@ -1,8 +1,8 @@
 # Voca — Backend API Documentation
 
 > **Maintained by:** Backend Agent  
-> **Last updated:** Sprint 00 (initial scaffold — no endpoints implemented yet)  
-> **Status:** 🟡 Pre-implementation — schema defined, no live routes
+> **Last updated:** Sprint 01 — Auth foundation complete  
+> **Status:** 🟢 Auth routes live | 🔴 Transcription routes pending
 
 This document is the **single source of truth** for all backend API contracts. The Frontend agent reads this document before building any data-fetching logic. The Backend agent updates this document at the end of every sprint.
 
@@ -17,7 +17,10 @@ Production:   https://your-vercel-domain.vercel.app/api
 
 ## Authentication
 
-All protected routes require a valid Auth.js session. Sessions are managed via cookies (HTTP-only). The frontend uses `useSession()` (client) or `auth()` (server) from Auth.js v5.
+All protected routes require a valid Auth.js session (JWT cookie, set automatically on OAuth sign-in). Sessions are managed via HTTP-only cookies. The frontend uses `useSession()` (client) or `auth()` (server) from Auth.js v5.
+
+**Strategy:** JWT (cookie-based, no DB query on session read)  
+**Sign-in page:** `/login`
 
 **Unauthorized response:**
 ```json
@@ -30,7 +33,7 @@ HTTP Status: `401`
 ## Types Reference
 
 ```ts
-// Shared types — also exported from @/lib/types/index.ts
+// Shared types — exported from @/lib/types/index.ts
 
 interface TranscriptionResult {
   id: string;
@@ -42,17 +45,32 @@ interface TranscriptionResult {
   createdAt: string; // ISO 8601
 }
 
+interface TranscriptionListItem {
+  id: string;
+  filename: string;
+  durationSeconds: number | null;
+  wordCount: number;
+  createdAt: string; // ISO 8601
+}
+
 interface ApiError {
   error: string;
   details?: unknown; // Zod error details on validation failures
 }
 
 interface PaginatedResponse<T> {
-  data: T[];
+  items: T[];
   total: number;
   page: number;
   limit: number;
+  hasMore: boolean;
 }
+
+type TranscriptionMetadata = {
+  source: 'whatsapp' | 'upload';
+  model: string;
+  optimizedAt?: string; // ISO 8601
+};
 ```
 
 ---
@@ -65,15 +83,34 @@ interface PaginatedResponse<T> {
 
 ### Auth (managed by Auth.js — not custom routes)
 
+> Status: 🟢 Implemented (Sprint 01)
+
 | Route | Method | Description |
 |---|---|---|
 | `/api/auth/signin` | GET/POST | Auth.js sign-in page/handler |
 | `/api/auth/signout` | POST | Sign out |
-| `/api/auth/session` | GET | Get current session |
+| `/api/auth/session` | GET | Get current session (`null` if unauthenticated) |
 | `/api/auth/callback/google` | GET | Google OAuth callback |
 | `/api/auth/callback/linkedin` | GET | LinkedIn OAuth callback |
 
-These are handled automatically by Auth.js. Do not implement custom handlers.
+These are handled automatically by Auth.js via `app/api/auth/[...nextauth]/route.ts`. Do not implement custom handlers.
+
+**Session shape returned by `GET /api/auth/session`:**
+```ts
+// Authenticated
+{
+  "user": {
+    "id": "cuid",
+    "name": "Nome Sobrenome",
+    "email": "user@example.com",
+    "image": "https://..."
+  },
+  "expires": "2026-05-22T00:00:00.000Z"
+}
+
+// Unauthenticated
+null
+```
 
 ---
 
@@ -145,7 +182,7 @@ TranscriptionResult
 
 ---
 
-## Database Schema (current)
+## Database Schema (current — Sprint 01)
 
 ```prisma
 model User {
@@ -156,22 +193,63 @@ model User {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   transcriptions Transcription[]
+  accounts       Account[]
+  sessions       Session[]
 }
 
 model Transcription {
   id               String   @id @default(cuid())
   userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   filename         String
   durationSeconds  Float?
   wordCount        Int?
   rawTranscription String   @db.Text
   optimizedPrompt  String   @db.Text
+  // JSON: { source: 'whatsapp' | 'upload', model: string, optimizedAt: string }
   metadata         Json?
   createdAt        DateTime @default(now())
 
   @@index([userId, createdAt(sort: Desc)])
 }
+
+// Auth.js required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
 ```
+
+> **Note:** `Session` table exists for Auth.js adapter compatibility but is not populated — the app uses JWT strategy.
 
 ---
 
@@ -180,6 +258,7 @@ model Transcription {
 | Sprint | Change |
 |---|---|
 | Sprint 00 | Initial document — schema defined, no endpoints live |
+| Sprint 01 | Auth routes live (Google + LinkedIn OAuth). Prisma client singleton. JWT session strategy. Route protection middleware. Schema: User, Transcription, Account, Session, VerificationToken. |
 
 ---
 
