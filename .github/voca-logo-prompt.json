@@ -1,0 +1,123 @@
+{
+  "project": "Voca",
+  "version": "1.0",
+  "brand_context": {
+    "name": "Voca",
+    "tagline": "Turn voice into context.",
+    "category": "AI productivity tool",
+    "audience": "Developers, tech professionals, power users",
+    "personality": ["minimal", "intelligent", "precise", "modern", "trustworthy"]
+  },
+  "logo_brief": {
+    "style": "Wordmark with icon — clean, geometric, professional. No gradients on the mark. Flat vector with solid fills only.",
+    "concept": "A minimal waveform or sound bar abstraction fused into or beside the word VOCA. The icon should feel like it could stand alone as an app icon.",
+    "icon_options": [
+      {
+        "option": "A",
+        "description": "Five vertical bars of varying heights forming a waveform, left-aligned. The middle bar is tallest. Bars are rounded at the top. Simple, timeless, instantly communicates 'audio'."
+      },
+      {
+        "option": "B",
+        "description": "The letter V stylized as two converging audio waveform bars meeting at a point, forming a negative-space V shape. Abstract but legible."
+      },
+      {
+        "option": "C",
+        "description": "A minimal speech bubble outline with a single waveform line inside it, symbolizing 'voice into text/context'."
+      }
+    ],
+    "preferred_option": "A",
+    "wordmark": {
+      "font_style": "Geometric sans-serif, heavy weight, tight letter-spacing (-0.03em). Think similar to Syne ExtraBold or Neue Haas Grotesk Display. All caps or title case both acceptable.",
+      "icon_position": "Left of wordmark, vertically centered, small gap"
+    }
+  },
+  "color_palette": {
+    "role": "60-30-10",
+    "colors": {
+      "60_base": {
+        "name": "Deep Forest",
+        "hex": "#0d2218",
+        "usage": "Primary backgrounds, dark surfaces, main brand color"
+      },
+      "30_secondary": {
+        "name": "Soft Canvas",
+        "hex": "#f8f9f7",
+        "usage": "Light backgrounds, cards, form areas"
+      },
+      "10_accent": {
+        "name": "Electric Mint",
+        "hex": "#4ade80",
+        "usage": "CTAs, highlights, hover states, checkmarks, brand accents. Use sparingly."
+      },
+      "neutral_mid": {
+        "name": "Forest Mist",
+        "hex": "#1a3a28",
+        "usage": "Hover states on dark backgrounds, subtle surfaces"
+      },
+      "text_on_dark": {
+        "name": "Pale Leaf",
+        "hex": "#f0fdf4",
+        "usage": "Primary text on dark backgrounds"
+      },
+      "text_on_light": {
+        "name": "Charcoal Pine",
+        "hex": "#111827",
+        "usage": "Primary text on light backgrounds"
+      }
+    }
+  },
+  "logo_specifications": {
+    "primary_version": {
+      "background": "dark (#0d2218)",
+      "icon_color": "#4ade80",
+      "wordmark_color": "#f0fdf4"
+    },
+    "reversed_version": {
+      "background": "light (#f8f9f7)",
+      "icon_color": "#16a34a",
+      "wordmark_color": "#0d2218"
+    },
+    "monochrome_version": {
+      "background": "white",
+      "icon_color": "#0d2218",
+      "wordmark_color": "#0d2218"
+    },
+    "icon_only": {
+      "usage": "App icon, favicon, social media profile picture",
+      "background": "#0d2218",
+      "icon_color": "#4ade80",
+      "border_radius": "22% (iOS-style rounded square for app icon)"
+    }
+  },
+  "image_generation_prompt": {
+    "model_target": "Midjourney / DALL-E / Ideogram / Nano Banana",
+    "prompt": "Minimal flat vector logo for a tech product called VOCA. Icon: five rounded vertical bars forming an audio waveform, bars varying in height (short, medium, tall, medium, short), color #4ade80 electric mint green on dark background #0d2218. Wordmark 'VOCA' in bold geometric sans-serif to the right of the icon, color white/off-white. No gradients. No shadows. No decorative elements. Clean, professional, startup aesthetic. SVG-style flat design. White background version and dark background version side by side.",
+    "negative_prompt": "gradients, 3D effects, drop shadows, ornate details, serif fonts, script fonts, complex illustrations, abstract art, photorealistic elements, rainbow colors, neon glow effects",
+    "aspect_ratio": "16:9 for concept sheet, 1:1 for icon version",
+    "style_references": "Linear app logo, Vercel logo, Supabase logo — minimal geometric mark + clean wordmark"
+  },
+  "typography": {
+    "display": {
+      "family": "Syne",
+      "weights": ["700", "800"],
+      "usage": "Headlines, logo wordmark, hero text"
+    },
+    "body": {
+      "family": "DM Sans",
+      "weights": ["300", "400", "500", "600"],
+      "usage": "UI text, labels, body copy, buttons"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weights": ["400", "500"],
+      "usage": "Code snippets, JSON export, transcript raw output"
+    }
+  },
+  "do_not": [
+    "Use purple, blue, or orange as the accent color",
+    "Use rounded bubbly fonts (Nunito, Poppins, Quicksand)",
+    "Add gradients to the logo mark",
+    "Use icons that resemble microphones (too generic)",
+    "Design anything that looks like a podcast app or transcription SaaS from 2018"
+  ]
+}
