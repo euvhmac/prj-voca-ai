@@ -21,18 +21,18 @@ export function UploadZone({ onFile, error }: UploadZoneProps) {
     [onFile],
   );
 
-  function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
+  function handleDragOver(e: React.DragEvent<HTMLLabelElement>) {
     e.preventDefault();
     setIsDragOver(true);
   }
 
-  function handleDragLeave(e: React.DragEvent<HTMLDivElement>) {
+  function handleDragLeave(e: React.DragEvent<HTMLLabelElement>) {
     if (!e.currentTarget.contains(e.relatedTarget as Node)) {
       setIsDragOver(false);
     }
   }
 
-  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+  function handleDrop(e: React.DragEvent<HTMLLabelElement>) {
     e.preventDefault();
     setIsDragOver(false);
     const file = e.dataTransfer.files[0];
