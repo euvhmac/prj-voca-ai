@@ -1,8 +1,8 @@
 # Voca — Backend API Documentation
 
 > **Maintained by:** Backend Agent  
-> **Last updated:** Sprint 03 — Prompt Optimizer implementado  
-> **Status:** 🟢 Auth routes live | 🟢 POST /api/transcribe (com otimização) | 🔴 History routes pending
+> **Last updated:** Sprint 04 — History API implementada  
+> **Status:** 🟢 Auth routes live | 🟢 POST /api/transcribe (com otimização) | 🟢 History API (list, get, delete)
 
 This document is the **single source of truth** for all backend API contracts. The Frontend agent reads this document before building any data-fetching logic. The Backend agent updates this document at the end of every sprint.
 
@@ -141,25 +141,37 @@ TranscriptionResult
 ---
 
 #### `GET /api/transcriptions`
+
+> Status: 🟢 Implementado (Sprint 04)
+
 **Auth required:** Yes  
-**Description:** Returns paginated list of user's transcription history.
+**Description:** Retorna lista paginada do histórico de transcrições do usuário autenticado.
 
 **Query params**
-| Param | Type | Default | Description |
+| Param | Type | Default | Constraints |
 |---|---|---|---|
-| `page` | number | 1 | Page number |
-| `limit` | number | 20 | Items per page (max 50) |
+| `page` | number | 1 | >= 1 |
+| `limit` | number | 20 | 1–50 (400 se exceder) |
 
 **Response `200`**
 ```ts
-PaginatedResponse<TranscriptionResult>
+PaginatedResponse<TranscriptionListItem>
 ```
+
+**Errors**
+| Status | Description |
+|---|---|
+| 400 | `limit` excede 50 ou `page` < 1 |
+| 401 | Sem sessão válida |
 
 ---
 
 #### `GET /api/transcriptions/:id`
+
+> Status: 🟢 Implementado (Sprint 04)
+
 **Auth required:** Yes  
-**Description:** Returns a single transcription by ID (must belong to authenticated user).
+**Description:** Retorna uma transcrição pelo ID (deve pertencer ao usuário autenticado). Retorna 404 mesmo que o item exista mas pertença a outro usuário — nunca vaza a existência do dado.
 
 **Response `200`**
 ```ts
@@ -169,16 +181,25 @@ TranscriptionResult
 **Errors**
 | Status | Description |
 |---|---|
-| 404 | Not found or belongs to different user |
-| 401 | No session |
+| 404 | Não encontrado ou pertence a outro usuário |
+| 401 | Sem sessão válida |
 
 ---
 
 #### `DELETE /api/transcriptions/:id`
-**Auth required:** Yes  
-**Description:** Deletes a transcription (scoped to authenticated user).
 
-**Response `204`** — No content
+> Status: 🟢 Implementado (Sprint 04)
+
+**Auth required:** Yes  
+**Description:** Deleta uma transcrição (escopo do usuário autenticado). Retorna 404 se não encontrado ou se pertencer a outro usuário.
+
+**Response `204`** — Sem conteúdo
+
+**Errors**
+| Status | Description |
+|---|---|
+| 404 | Não encontrado ou pertence a outro usuário |
+| 401 | Sem sessão válida |
 
 ---
 
@@ -261,6 +282,7 @@ model VerificationToken {
 | Sprint 01 | Auth routes live (Google + LinkedIn OAuth). Prisma client singleton. JWT session strategy. Route protection middleware. Schema: User, Transcription, Account, Session, VerificationToken. |
 | Sprint 02 | `POST /api/transcribe` implementado. Validação Zod (MIME + extensão + tamanho). Repositório de transcrições. Serviço de orquestração. `optimizedPrompt` = `rawTranscription` (placeholder). |
 | Sprint 03 | `lib/ai/optimizer.ts` com `gpt-5.4-mini`. Pipeline completo: transcrição → otimização → DB. Graceful degradation: falha do optimizer usa `rawTranscription` como fallback. `metadata.optimizedAt` adicionado. Suíte de testes Vitest (Sprints 01–03). |
+| Sprint 04 | History API implementada: `GET /api/transcriptions` (paginada, `limit` máx 50), `GET /api/transcriptions/:id` (com 404 para outros usuários), `DELETE /api/transcriptions/:id` (com 404 para outros usuários). Validação Zod em query params. Testes de integração para os três endpoints. |
 
 ---
 
