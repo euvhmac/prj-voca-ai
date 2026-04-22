@@ -1,14 +1,14 @@
 import { transcribeAudio } from '@/lib/ai/transcription';
+import { optimizePrompt } from '@/lib/ai/optimizer';
 import { transcriptionRepository } from '@/lib/db/transcriptions';
-import type { TranscriptionResult } from '@/lib/types';
-import type { TranscriptionMetadata } from '@/lib/types';
+import type { TranscriptionResult, TranscriptionMetadata } from '@/lib/types';
 
 export interface ProcessTranscriptionInput {
   userId: string;
   file: File;
 }
 
-function countWords(text: string): number {
+export function countWords(text: string): number {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
@@ -16,17 +16,29 @@ export const transcriptionService = {
   async process(input: ProcessTranscriptionInput): Promise<TranscriptionResult> {
     const { userId, file } = input;
 
-    // 1. Transcreve via OpenAI
+    // 1. Transcreve via OpenAI Whisper
     const { text, durationSeconds } = await transcribeAudio(file);
-
-    // Sprint 02: optimizedPrompt = rawTranscription (placeholder até Sprint 03)
-    const optimizedPrompt = text;
     const wordCount = countWords(text);
 
-    // 2. Persiste no banco
+    // 2. Otimiza o prompt — graceful degradation: falha não bloqueia o pipeline
+    let optimizedPrompt = text;
+    let optimizerMeta: Pick<TranscriptionMetadata, 'optimizedAt'> = {};
+
+    try {
+      const result = await optimizePrompt(text);
+      optimizedPrompt = result.optimizedPrompt;
+      optimizerMeta = { optimizedAt: new Date().toISOString() };
+    } catch (err) {
+      // Fallback: rawTranscription é usado como optimizedPrompt
+      // Log completo apenas no servidor — nunca expõe ao cliente
+      console.error('[transcriptionService] optimizer falhou, usando fallback:', err);
+    }
+
+    // 3. Persiste no banco
     const metadata: TranscriptionMetadata = {
       source: 'upload',
       model: 'gpt-4o-mini-transcribe',
+      ...optimizerMeta,
     };
 
     const record = await transcriptionRepository.create({
