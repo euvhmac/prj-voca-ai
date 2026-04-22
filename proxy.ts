@@ -1,8 +1,10 @@
 import NextAuth from 'next-auth';
 import { authConfig } from '@/lib/auth/config';
 
-// Usa config edge-compatible (sem Prisma) para verificar sessão no middleware
-export const { auth: middleware } = NextAuth(authConfig);
+// Usa config edge-compatible (sem Prisma) para verificar sessão no proxy
+const { auth } = NextAuth(authConfig);
+
+export default auth;
 
 export const config = {
   matcher: [

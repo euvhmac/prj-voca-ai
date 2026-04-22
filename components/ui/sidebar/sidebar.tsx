@@ -101,8 +101,13 @@ export function Sidebar() {
 
   return (
     <aside
-      className="fixed left-0 top-0 h-full w-16 flex flex-col items-center py-5 gap-2 z-50"
-      style={{ backgroundColor: '#0d2218', borderRight: '1px solid rgba(74,222,128,0.08)' }}
+      className="fixed left-0 top-0 flex flex-col items-center py-5 gap-2 z-50"
+      style={{
+        backgroundColor: '#0d2218',
+        borderRight: '1px solid rgba(74,222,128,0.08)',
+        width: '64px',
+        height: '100vh',
+      }}
       aria-label="Navegação principal"
     >
       {/* Logo */}

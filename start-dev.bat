@@ -35,3 +35,4 @@ if not exist "node_modules" (
 start "" http://localhost:3000
 
 npm run dev
+pause
