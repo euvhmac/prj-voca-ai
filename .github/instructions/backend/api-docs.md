@@ -1,8 +1,8 @@
 # Voca — Backend API Documentation
 
 > **Maintained by:** Backend Agent  
-> **Last updated:** Sprint 01 — Auth foundation complete  
-> **Status:** 🟢 Auth routes live | 🔴 Transcription routes pending
+> **Last updated:** Sprint 02 — Transcription API implementada  
+> **Status:** 🟢 Auth routes live | 🟢 POST /api/transcribe | 🔴 History routes pending
 
 This document is the **single source of truth** for all backend API contracts. The Frontend agent reads this document before building any data-fetching logic. The Backend agent updates this document at the end of every sprint.
 
@@ -77,10 +77,6 @@ type TranscriptionMetadata = {
 
 ## Endpoints
 
-> ⚠️ All endpoints below are **planned**. This section will be filled in by the Backend agent as sprints complete.
-
----
-
 ### Auth (managed by Auth.js — not custom routes)
 
 > Status: 🟢 Implemented (Sprint 01)
@@ -116,15 +112,19 @@ null
 
 ### Transcriptions
 
-> Status: 🔴 Not implemented (Sprint 02)
-
 #### `POST /api/transcribe`
-**Auth required:** Yes  
-**Description:** Accepts an audio file, transcribes via OpenAI, optimizes the prompt, and saves to DB.
+
+> Status: 🟢 Implementado (Sprint 02)
+
+**Auth required:** Yes (session)  
+**Description:** Aceita arquivo de áudio, transcreve via OpenAI `gpt-4o-mini-transcribe`, salva no DB e retorna o resultado. `optimizedPrompt` = `rawTranscription` neste sprint (placeholder até Sprint 03).
 
 **Request**
 - Content-Type: `multipart/form-data`
-- Body field: `audio` (File) — max 25MB
+- Body field: `audio` (File)
+  - Tamanho máximo: 25 MB
+  - Formatos aceitos: `.ogg`, `.mp3`, `.m4a`, `.wav`, `.opus`, `.webm`
+  - MIME fallback: `application/octet-stream` aceito (comum em .ogg exportados do WhatsApp)
 
 **Response `201`**
 ```ts
@@ -132,11 +132,11 @@ TranscriptionResult
 ```
 
 **Errors**
-| Status | Description |
-|---|---|
-| 400 | Missing file, invalid format, or exceeds 25MB |
-| 401 | No session |
-| 500 | OpenAI API failure or DB error |
+| Status | Code | Description |
+|---|---|---|
+| 400 | INVALID_INPUT | Arquivo ausente, formato inválido ou excede 25 MB |
+| 401 | UNAUTHORIZED | Sem sessão válida |
+| 500 | INTERNAL_ERROR | Falha na API OpenAI ou no banco de dados |
 
 ---
 
@@ -259,6 +259,7 @@ model VerificationToken {
 |---|---|
 | Sprint 00 | Initial document — schema defined, no endpoints live |
 | Sprint 01 | Auth routes live (Google + LinkedIn OAuth). Prisma client singleton. JWT session strategy. Route protection middleware. Schema: User, Transcription, Account, Session, VerificationToken. |
+| Sprint 02 | `POST /api/transcribe` implementado. Validação Zod (MIME + extensão + tamanho). Repositório de transcrições. Serviço de orquestração. `optimizedPrompt` = `rawTranscription` (placeholder). |
 
 ---
 
