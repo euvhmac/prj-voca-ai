@@ -1,8 +1,8 @@
 # Voca — Backend API Documentation
 
 > **Maintained by:** Backend Agent  
-> **Last updated:** Sprint 02 — Transcription API implementada  
-> **Status:** 🟢 Auth routes live | 🟢 POST /api/transcribe | 🔴 History routes pending
+> **Last updated:** Sprint 03 — Prompt Optimizer implementado  
+> **Status:** 🟢 Auth routes live | 🟢 POST /api/transcribe (com otimização) | 🔴 History routes pending
 
 This document is the **single source of truth** for all backend API contracts. The Frontend agent reads this document before building any data-fetching logic. The Backend agent updates this document at the end of every sprint.
 
@@ -114,10 +114,10 @@ null
 
 #### `POST /api/transcribe`
 
-> Status: 🟢 Implementado (Sprint 02)
+> Status: 🟢 Implementado (Sprint 02 → atualizado Sprint 03)
 
 **Auth required:** Yes (session)  
-**Description:** Aceita arquivo de áudio, transcreve via OpenAI `gpt-4o-mini-transcribe`, salva no DB e retorna o resultado. `optimizedPrompt` = `rawTranscription` neste sprint (placeholder até Sprint 03).
+**Description:** Aceita arquivo de áudio, transcreve via OpenAI `gpt-4o-mini-transcribe`, otimiza o prompt via `gpt-5.4-mini` e salva no DB. Se o optimizer falhar, `optimizedPrompt` recebe o valor de `rawTranscription` (graceful degradation).
 
 **Request**
 - Content-Type: `multipart/form-data`
@@ -260,6 +260,7 @@ model VerificationToken {
 | Sprint 00 | Initial document — schema defined, no endpoints live |
 | Sprint 01 | Auth routes live (Google + LinkedIn OAuth). Prisma client singleton. JWT session strategy. Route protection middleware. Schema: User, Transcription, Account, Session, VerificationToken. |
 | Sprint 02 | `POST /api/transcribe` implementado. Validação Zod (MIME + extensão + tamanho). Repositório de transcrições. Serviço de orquestração. `optimizedPrompt` = `rawTranscription` (placeholder). |
+| Sprint 03 | `lib/ai/optimizer.ts` com `gpt-5.4-mini`. Pipeline completo: transcrição → otimização → DB. Graceful degradation: falha do optimizer usa `rawTranscription` como fallback. `metadata.optimizedAt` adicionado. Suíte de testes Vitest (Sprints 01–03). |
 
 ---
 
