@@ -86,16 +86,19 @@ export function HistoryItem({ item, isSelected, onSelect, onDelete }: HistoryIte
   const relDate = formatRelativeDate(item.createdAt);
 
   return (
-    <button
-      onClick={() => onSelect(item.id)}
-      aria-pressed={isSelected}
+    <div
+      role="row"
+      aria-selected={isSelected}
       className="w-full text-left group relative flex items-start gap-3 px-4 py-3.5 rounded-[14px]
-        transition-all duration-150
-        focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none"
+        transition-all duration-150 cursor-pointer"
       style={{
         backgroundColor: isSelected ? 'rgba(74,222,128,0.07)' : 'white',
         border: isSelected ? '1px solid rgba(74,222,128,0.25)' : '1px solid #e5e7eb',
       }}
+      onClick={() => onSelect(item.id)}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(item.id); } }}
+      tabIndex={0}
+      aria-label={`Abrir transcrição ${item.filename}`}
     >
       {/* Waveform indicator */}
       <div
@@ -203,6 +206,6 @@ export function HistoryItem({ item, isSelected, onSelect, onDelete }: HistoryIte
           </button>
         )}
       </div>
-    </button>
+    </div>
   );
 }
