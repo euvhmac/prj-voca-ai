@@ -18,26 +18,26 @@ export function SocialLoginButtons() {
     }
   }
 
+  const btnClass =
+    'flex items-center justify-center gap-3 w-full px-4 py-2.5 ' +
+    'border border-[#e5e7eb] rounded-[8px] text-[13.5px] font-medium ' +
+    'text-[#374151] bg-white ' +
+    'transition-all duration-150 ' +
+    'hover:border-[#4ade80] hover:bg-[#f0fdf4] hover:text-[#0d2218] ' +
+    'focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none ' +
+    'disabled:opacity-60 disabled:cursor-not-allowed';
+
   return (
     <div className="flex flex-col gap-3">
       {/* Google */}
       <button
         onClick={() => handleSignIn('google')}
         disabled={loading !== null}
-        className="flex items-center justify-center gap-3 w-full px-4 py-2.5 border rounded-[8px] text-[13.5px] font-medium transition-all focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed hover:border-[#4ade80] hover:bg-[#f0fdf4] hover:text-[#0d2218]"
-        style={{
-          borderColor: '#e5e7eb',
-          color: '#374151',
-          backgroundColor: '#ffffff',
-          fontFamily: 'var(--font-dm-sans)',
-        }}
+        className={btnClass}
+        style={{ fontFamily: 'var(--font-dm-sans)' }}
         aria-label="Entrar com Google"
       >
-        {loading === 'google' ? (
-          <Spinner />
-        ) : (
-          <GoogleIcon />
-        )}
+        {loading === 'google' ? <Spinner /> : <GoogleIcon />}
         Continuar com Google
       </button>
 
@@ -45,20 +45,11 @@ export function SocialLoginButtons() {
       <button
         onClick={() => handleSignIn('linkedin')}
         disabled={loading !== null}
-        className="flex items-center justify-center gap-3 w-full px-4 py-2.5 border rounded-[8px] text-[13.5px] font-medium transition-all focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed hover:border-[#4ade80] hover:bg-[#f0fdf4] hover:text-[#0d2218]"
-        style={{
-          borderColor: '#e5e7eb',
-          color: '#374151',
-          backgroundColor: '#ffffff',
-          fontFamily: 'var(--font-dm-sans)',
-        }}
+        className={btnClass}
+        style={{ fontFamily: 'var(--font-dm-sans)' }}
         aria-label="Entrar com LinkedIn"
       >
-        {loading === 'linkedin' ? (
-          <Spinner />
-        ) : (
-          <LinkedInIcon />
-        )}
+        {loading === 'linkedin' ? <Spinner /> : <LinkedInIcon />}
         Continuar com LinkedIn
       </button>
     </div>

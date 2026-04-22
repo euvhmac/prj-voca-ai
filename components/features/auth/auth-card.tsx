@@ -72,8 +72,7 @@ export function AuthCard({ error }: AuthCardProps) {
 
       {/* Tab toggle */}
       <div
-        className="flex rounded-[10px] p-1 gap-0.5 mb-7"
-        style={{ backgroundColor: '#eff1ee' }}
+        className="flex rounded-[10px] p-1 gap-0.5 mb-7 bg-[#eff1ee]"
         role="tablist"
         aria-label="Tipo de acesso"
       >
@@ -81,18 +80,13 @@ export function AuthCard({ error }: AuthCardProps) {
           role="tab"
           aria-selected={tab === 'login'}
           onClick={() => setTab('login')}
-          className="flex-1 py-2 rounded-[7px] text-[13.5px] font-medium transition-all focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none"
-          style={{
-            fontFamily: 'var(--font-dm-sans)',
-            ...(tab === 'login'
-              ? {
-                  backgroundColor: '#ffffff',
-                  color: '#0d2218',
-                  fontWeight: 600,
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
-                }
-              : { backgroundColor: 'transparent', color: '#6b7280' }),
-          }}
+          style={{ fontFamily: 'var(--font-dm-sans)' }}
+          className={`flex-1 py-2 rounded-[7px] text-[13.5px] transition-all duration-150
+            focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none
+            ${tab === 'login'
+              ? 'bg-white text-[#0d2218] font-semibold shadow-[0_1px_4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.04)]'
+              : 'bg-transparent text-[#6b7280] font-medium hover:text-[#374151]'
+            }`}
         >
           Entrar
         </button>
@@ -100,18 +94,13 @@ export function AuthCard({ error }: AuthCardProps) {
           role="tab"
           aria-selected={tab === 'register'}
           onClick={() => setTab('register')}
-          className="flex-1 py-2 rounded-[7px] text-[13.5px] font-medium transition-all focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none"
-          style={{
-            fontFamily: 'var(--font-dm-sans)',
-            ...(tab === 'register'
-              ? {
-                  backgroundColor: '#ffffff',
-                  color: '#0d2218',
-                  fontWeight: 600,
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
-                }
-              : { backgroundColor: 'transparent', color: '#6b7280' }),
-          }}
+          style={{ fontFamily: 'var(--font-dm-sans)' }}
+          className={`flex-1 py-2 rounded-[7px] text-[13.5px] transition-all duration-150
+            focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none
+            ${tab === 'register'
+              ? 'bg-white text-[#0d2218] font-semibold shadow-[0_1px_4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.04)]'
+              : 'bg-transparent text-[#6b7280] font-medium hover:text-[#374151]'
+            }`}
         >
           Criar conta
         </button>
