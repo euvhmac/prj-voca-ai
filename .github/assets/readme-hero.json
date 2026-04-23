@@ -1,0 +1,25 @@
+{
+  "name": "readme-hero",
+  "purpose": "Banner no topo do README.md — primeira imagem que um visitante vê no repositório",
+  "dimensions": "1280x400",
+  "format": "PNG",
+  "destination": ".github/assets/readme-hero.png",
+  "style_tokens": [
+    "ultra-wide banner",
+    "dark background",
+    "waveform motif",
+    "editorial layout",
+    "left-aligned text composition"
+  ],
+  "color_palette": {
+    "background": "#0d2218",
+    "accent": "#4ade80",
+    "text": "#f8f9f7"
+  },
+  "prompt": "Ultra-wide banner image for a GitHub README. Background: deep forest green #0d2218. Left side: large logotype 'Voca' in geometric sans-serif, near-white. Below it: tagline 'Turn voice into context.' in electric mint #4ade80. Right side: an abstract visualization of an audio waveform transforming into clean structured text lines — minimal, line-art style, monochrome mint on dark green. Center-right: three floating card outlines representing the pipeline steps: microphone icon → AI chip icon → document icon, connected by thin arrows. No photos. No people. Code-tool aesthetic, Vercel-inspired. Horizontal composition, significant negative space.",
+  "negative_prompt": "gradient, glow, 3D render, photorealistic, human, stock photo, bright background, white background, rainbow, neon",
+  "model_hints": {
+    "dalle3": "Aspect ratio ~3.2:1. Dark background mandatory.",
+    "midjourney": "--ar 32:10 --style raw --v 6 --no gradient"
+  }
+}

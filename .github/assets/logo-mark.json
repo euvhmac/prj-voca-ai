@@ -1,0 +1,24 @@
+{
+  "name": "logo-mark",
+  "purpose": "Ícone do repositório no GitHub + fonte para favicon e app icon",
+  "dimensions": "512x512",
+  "format": "PNG com fundo transparente ou #0d2218",
+  "destination": ".github/assets/logo-mark.png",
+  "style_tokens": [
+    "logo mark",
+    "icon only",
+    "waveform concept",
+    "geometric",
+    "single color accent"
+  ],
+  "color_palette": {
+    "background": "#0d2218",
+    "mark": "#4ade80"
+  },
+  "prompt": "A minimal logo mark for 'Voca', an AI voice tool. Square format 512x512. Background: deep forest green #0d2218. Center: an abstract waveform symbol made of 5 vertical bars of varying heights (pattern: short, medium, tall, medium, short — like an audio equalizer), rendered in electric mint #4ade80. Bars are rounded at tops, evenly spaced, proportional. Below the waveform: the letter 'V' in a geometric sans-serif, same mint color, small. Entire mark is centered with generous padding. Ultra-minimal, icon-ready, recognizable at 32px.",
+  "negative_prompt": "complex illustration, gradients, shadows, multiple colors, photorealistic, text beyond the letter V, decorative swirls, 3D",
+  "model_hints": {
+    "dalle3": "Vector-style icon. Exact colors only. Transparent or dark background.",
+    "midjourney": "--ar 1:1 --style raw --v 6 --no gradient shadow"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "og-share",
+  "purpose": "Open Graph para páginas do app deployado — exibido ao compartilhar links no WhatsApp, Twitter, etc.",
+  "dimensions": "1200x630",
+  "format": "PNG",
+  "destination": "public/og-image.png",
+  "style_tokens": [
+    "og image",
+    "app share card",
+    "dark",
+    "branded",
+    "url visible"
+  ],
+  "color_palette": {
+    "background": "#0d2218",
+    "accent": "#4ade80",
+    "text": "#f8f9f7"
+  },
+  "prompt": "Open Graph share image for a web app called Voca. Background: deep forest green #0d2218. Top-left: small waveform icon (5 mint bars) + wordmark 'Voca' in geometric sans-serif, near-white. Center: large headline 'Turn voice into context.' in near-white, display typeface, left-aligned. Below headline: tagline 'Transcreva. Otimize. Cole no LLM.' in electric mint #4ade80, smaller. Bottom row: three small pill badges — 'OpenAI Whisper', 'GPT', 'Next.js' — dark surface with mint text. Bottom-right: domain 'voca.vercel.app' in muted white. No photos. Flat, editorial, code-tool aesthetic. Consistent with the social-preview card.",
+  "negative_prompt": "gradient, 3D, photos, people, mascot, bright background, cluttered",
+  "model_hints": {
+    "dalle3": "Aspect ratio ~1.9:1. Dark background. Flat design.",
+    "midjourney": "--ar 19:10 --style raw --v 6"
+  }
+}
