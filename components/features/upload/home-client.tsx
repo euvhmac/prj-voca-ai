@@ -95,14 +95,15 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
   );
 
   const isIdle = state.phase === 'idle';
-  const showHowItWorks = !isAuthenticated && isIdle;
 
   // ── Estado idle ────────────────────────────────────────────
   if (isIdle) {
     // Anônimo: split-screen igual ao login — alto impacto visual
     if (!isAuthenticated) {
       return (
-        <div className="flex flex-col md:flex-row min-h-screen">
+        <div className="flex flex-col">
+          {/* ── Split-screen — Deep Forest + Soft Canvas, min full viewport ── */}
+          <div className="flex flex-col md:flex-row min-h-screen">
           {/* ── Painel esquerdo — Deep Forest, brand pane ── */}
           <aside
             className="relative overflow-hidden flex flex-col justify-between gap-10 px-7 py-10 md:w-[52%] md:px-12 md:py-14"
@@ -160,7 +161,7 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
             style={{ backgroundColor: '#f8f9f7' }}
             aria-live="polite"
           >
-            <div className="w-full max-w-[540px] flex flex-col gap-10">
+            <div className="w-full max-w-[540px]">
               <div className="relative animate-fade-up" style={{ animationDelay: '0.2s' }}>
                 <WaveformBackdrop />
                 <div className="relative z-10">
@@ -171,9 +172,19 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
                   />
                 </div>
               </div>
-              {showHowItWorks && <HowItWorks />}
             </div>
           </section>
+          </div>
+
+          {/* ── Como funciona — full-width, abaixo do fold ── */}
+          <div
+            className="px-6 py-16 md:px-12 md:py-20"
+            style={{ backgroundColor: '#f8f9f7' }}
+          >
+            <div className="max-w-[960px] mx-auto">
+              <HowItWorks />
+            </div>
+          </div>
 
           {/* Hint de rolagem para descobrir o footer institucional */}
           <ScrollHint />
