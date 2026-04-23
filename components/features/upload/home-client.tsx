@@ -101,66 +101,66 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
     // Anônimo: split-screen igual ao login — alto impacto visual
     if (!isAuthenticated) {
       return (
-        <div className="flex flex-col md:flex-row">
-          {/* ── Painel esquerdo — Deep Forest, sticky brand pane ── */}
-          <aside
-            className="relative overflow-hidden flex flex-col justify-between gap-10 px-7 py-10 md:w-[45%] md:sticky md:top-0 md:h-screen md:px-12 md:py-14"
-            style={{ backgroundColor: '#0d2218' }}
-            aria-label="Apresentação do Voca"
-          >
-            <BrandPaneArt />
+        <div className="flex flex-col">
+          {/* ── Split-screen — exatamente um viewport, sem scroll interno ── */}
+          <div className="flex flex-col md:flex-row md:h-screen">
+            {/* ── Painel esquerdo — Deep Forest, brand pane ── */}
+            <aside
+              className="relative overflow-hidden flex flex-col justify-between gap-10 px-7 py-10 md:w-[45%] md:px-12 md:py-14"
+              style={{ backgroundColor: '#0d2218' }}
+              aria-label="Apresentação do Voca"
+            >
+              <BrandPaneArt />
 
-            {/* Logo */}
-            <div className="relative z-10 flex items-center gap-3 animate-fade-up">
-              <WaveformIcon size={32} color="#4ade80" />
-              <span
-                className="text-[26px] font-extrabold tracking-[-0.6px]"
-                style={{ fontFamily: 'var(--font-syne)', color: '#f0fdf4' }}
-              >
-                Voca
-              </span>
-            </div>
+              {/* Logo */}
+              <div className="relative z-10 flex items-center gap-3 animate-fade-up">
+                <WaveformIcon size={32} color="#4ade80" />
+                <span
+                  className="text-[26px] font-extrabold tracking-[-0.6px]"
+                  style={{ fontFamily: 'var(--font-syne)', color: '#f0fdf4' }}
+                >
+                  Voca
+                </span>
+              </div>
 
-            {/* Hero */}
-            <div className="relative z-10 flex flex-col gap-5">
-              <span
-                className="text-[11px] font-medium tracking-[2.5px] uppercase animate-fade-up"
-                style={{ fontFamily: 'var(--font-dm-sans)', color: '#4ade80' }}
-              >
-                AI-Powered
-              </span>
-              <AnimatedHero
-                tone="light"
-                headline="Turn voice into context."
-                subline="Envie um áudio do WhatsApp, gravação ou reunião e receba um prompt estruturado, pronto para colar em qualquer LLM — ChatGPT, Claude, Gemini."
-              />
-            </div>
+              {/* Hero */}
+              <div className="relative z-10 flex flex-col gap-5">
+                <span
+                  className="text-[11px] font-medium tracking-[2.5px] uppercase animate-fade-up"
+                  style={{ fontFamily: 'var(--font-dm-sans)', color: '#4ade80' }}
+                >
+                  AI-Powered
+                </span>
+                <AnimatedHero
+                  tone="light"
+                  headline="Turn voice into context."
+                  subline="Envie um áudio do WhatsApp, gravação ou reunião e receba um prompt estruturado, pronto para colar em qualquer LLM — ChatGPT, Claude, Gemini."
+                />
+              </div>
 
-            {/* Tagline rodapé do painel */}
-            <div className="relative z-10 flex flex-col gap-2 animate-fade-up" style={{ animationDelay: '0.6s' }}>
-              <p
-                className="text-[12px] tracking-[0.5px]"
-                style={{ fontFamily: 'var(--font-dm-sans)', color: 'rgba(240,253,244,0.45)' }}
-              >
-                .ogg · .mp3 · .m4a · .wav · .opus · .webm — até 25MB
-              </p>
-              <p
-                className="text-[11.5px]"
-                style={{ fontFamily: 'var(--font-dm-sans)', color: 'rgba(240,253,244,0.30)' }}
-              >
-                Processado pela OpenAI · sem armazenamento permanente do áudio
-              </p>
-            </div>
-          </aside>
+              {/* Tagline rodapé do painel */}
+              <div className="relative z-10 flex flex-col gap-2 animate-fade-up" style={{ animationDelay: '0.6s' }}>
+                <p
+                  className="text-[12px] tracking-[0.5px]"
+                  style={{ fontFamily: 'var(--font-dm-sans)', color: 'rgba(240,253,244,0.45)' }}
+                >
+                  .ogg · .mp3 · .m4a · .wav · .opus · .webm — até 25MB
+                </p>
+                <p
+                  className="text-[11.5px]"
+                  style={{ fontFamily: 'var(--font-dm-sans)', color: 'rgba(240,253,244,0.30)' }}
+                >
+                  Processado pela OpenAI · sem armazenamento permanente do áudio
+                </p>
+              </div>
+            </aside>
 
-          {/* ── Painel direito — Soft Canvas, upload + como funciona ── */}
-          <section
-            className="flex-1 flex flex-col"
-            style={{ backgroundColor: '#f8f9f7' }}
-            aria-live="polite"
-          >
-            {/* Upload zone — ocupa o primeiro viewport */}
-            <div className="flex items-center justify-center px-6 py-10 md:px-10 md:py-16 md:min-h-screen">
+            {/* ── Painel direito — Soft Canvas, upload centralizado ── */}
+            <section
+              className="flex-1 flex items-center justify-center px-6 py-10 md:px-10 md:py-16"
+              style={{ backgroundColor: '#f8f9f7' }}
+              aria-live="polite"
+            >
               <div className="w-full max-w-[540px]">
                 <div className="relative animate-fade-up" style={{ animationDelay: '0.2s' }}>
                   <WaveformBackdrop />
@@ -173,13 +173,18 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
+          </div>
 
-            {/* Como funciona — naturalmente abaixo, sem compressão */}
-            <div className="px-6 pb-16 md:px-10 md:pb-20">
+          {/* ── Como funciona — full-width, abaixo do fold ── */}
+          <div
+            className="px-6 py-16 md:px-12 md:py-24"
+            style={{ backgroundColor: '#f8f9f7' }}
+          >
+            <div className="max-w-[1100px] mx-auto">
               <HowItWorks />
             </div>
-          </section>
+          </div>
 
           {/* Hint de rolagem para descobrir o footer institucional */}
           <ScrollHint />
