@@ -28,9 +28,13 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXTAUTH_URL ?? 'https://voca.vercel.app'
+    process.env.NEXTAUTH_URL ?? 'https://voca.vhmac.com'
   ),
   title: 'Voca — Turn voice into context',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+  },
   description:
     'Transforme mensagens de voz em prompts estruturados, prontos para colar em qualquer LLM. Transcrição com Whisper + otimização GPT.',
   keywords: ['voca', 'transcrição', 'áudio', 'prompt', 'LLM', 'OpenAI', 'WhatsApp'],

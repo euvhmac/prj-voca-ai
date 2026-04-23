@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { WaveformIcon } from '@/components/ui/icons/waveform-icon';
 
 const GITHUB_URL = 'https://github.com/euvhmac/prj-voca-ai';
-const CONTACT_EMAIL = 'voca@vhmac.dev';
+const CONTACT_EMAIL = 'victor@vhmac.com';
 
 interface FooterProps {
   /** Quando `true`, renderiza versão compacta de uma linha — ideal para colunas estreitas (ex.: painel direito do login). */

@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         <p>
           O Voca é mantido por uma pessoa física desenvolvedora, como projeto de portfólio
           open-source. Para qualquer questão sobre dados pessoais, escreva para{' '}
-          <a href="mailto:voca@vhmac.dev">voca@vhmac.dev</a>.
+          <a href="mailto:victor@vhmac.com">victor@vhmac.com</a>.
         </p>
       </Section>
 
@@ -142,7 +142,7 @@ export default function PrivacyPage() {
         </ul>
         <p>
           Para exercer qualquer um desses direitos, escreva para{' '}
-          <a href="mailto:voca@vhmac.dev">voca@vhmac.dev</a>.
+          <a href="mailto:victor@vhmac.com">victor@vhmac.com</a>.
         </p>
       </Section>
 
