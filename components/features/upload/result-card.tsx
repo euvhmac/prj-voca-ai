@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import type { TranscriptionResult } from '@/lib/types';
+import { useToast } from '@/components/ui/toast';
 
 interface ResultCardProps {
   result: TranscriptionResult;
@@ -62,6 +63,7 @@ export function ResultCard({ result, onReset }: ResultCardProps) {
   const [activeTab, setActiveTab] = useState<ActiveTab>('optimized');
   const [copied, setCopied] = useState(false);
   const [copiedLLM, setCopiedLLM] = useState(false);
+  const { toast } = useToast();
 
   const activeContent =
     activeTab === 'optimized' ? result.optimizedPrompt : result.rawTranscription;
@@ -69,18 +71,21 @@ export function ResultCard({ result, onReset }: ResultCardProps) {
   const handleCopy = useCallback(async () => {
     await navigator.clipboard.writeText(activeContent);
     setCopied(true);
+    toast('Copiado para a área de transferência', 'success');
     setTimeout(() => setCopied(false), 2000);
-  }, [activeContent]);
+  }, [activeContent, toast]);
 
   const handleCopyLLM = useCallback(async () => {
     await navigator.clipboard.writeText(result.optimizedPrompt);
     setCopiedLLM(true);
+    toast('Prompt copiado — pronto para colar no LLM', 'success');
     setTimeout(() => setCopiedLLM(false), 2000);
-  }, [result.optimizedPrompt]);
+  }, [result.optimizedPrompt, toast]);
 
   function handleDownloadMd() {
     const content = `# Voca — Prompt Otimizado\n\n> Gerado em: ${new Date(result.createdAt).toLocaleString('pt-BR')}\n> Arquivo: ${result.filename}\n\n---\n\n## Prompt Otimizado\n\n${result.optimizedPrompt}\n\n---\n\n## Transcrição Bruta\n\n${result.rawTranscription}\n`;
     downloadBlob(content, 'voca-prompt.md', 'text/markdown');
+    toast('Arquivo .md baixado', 'success');
   }
 
   function handleDownloadJson() {
@@ -95,6 +100,7 @@ export function ResultCard({ result, onReset }: ResultCardProps) {
       generated_at: new Date().toISOString(),
     };
     downloadBlob(JSON.stringify(payload, null, 2), 'voca-prompt.json', 'application/json');
+    toast('Arquivo .json baixado', 'success');
   }
 
   const durationLabel = result.durationSeconds

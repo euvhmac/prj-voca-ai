@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Syne, DM_Sans, JetBrains_Mono } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
+import { ToastProvider, ToastContainer } from '@/components/ui/toast';
 import './globals.css';
 
 const syne = Syne({
@@ -27,7 +28,27 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'Voca — Turn voice into context',
   description:
-    'Transforme mensagens de voz em prompts estruturados prontos para qualquer LLM.',
+    'Transforme mensagens de voz em prompts estruturados, prontos para colar em qualquer LLM. Transcrição com Whisper + otimização GPT.',
+  keywords: ['voca', 'transcrição', 'áudio', 'prompt', 'LLM', 'OpenAI', 'WhatsApp'],
+  authors: [{ name: 'Voca' }],
+  openGraph: {
+    title: 'Voca — Turn voice into context',
+    description:
+      'Transforme mensagens de voz em prompts estruturados, prontos para colar em qualquer LLM.',
+    type: 'website',
+    locale: 'pt_BR',
+    siteName: 'Voca',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Voca — Turn voice into context',
+    description:
+      'Transforme mensagens de voz em prompts estruturados, prontos para colar em qualquer LLM.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -41,7 +62,12 @@ export default function RootLayout({
       className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+          <ToastProvider>
+            {children}
+            <ToastContainer />
+          </ToastProvider>
+        </SessionProvider>
       </body>
     </html>
   );
