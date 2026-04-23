@@ -1,0 +1,159 @@
+[
+  {
+    "name": "social-preview",
+    "purpose": "GitHub Open Graph card — exibido quando alguém compartilha o repositório no Twitter/LinkedIn/WhatsApp",
+    "dimensions": "1280x640",
+    "format": "PNG",
+    "destination": ".github/assets/social-preview.png",
+    "style_tokens": [
+      "minimalist tech editorial",
+      "Linear / Vercel / Railway aesthetic",
+      "negative space dominant",
+      "flat design with micro-depth",
+      "no gradients",
+      "no mascots",
+      "no 3D blobs",
+      "no stock photo elements"
+    ],
+    "color_palette": {
+      "background": "#0d2218",
+      "accent": "#4ade80",
+      "text_primary": "#f8f9f7",
+      "text_secondary": "rgba(248,249,247,0.5)"
+    },
+    "prompt": "A minimalist open-source project social card for 'Voca', a voice-to-context AI tool. Background: deep forest green #0d2218. Centered layout. Large sans-serif logotype 'Voca' in near-white #f8f9f7 using a geometric display typeface. Below the logotype, tagline 'Turn voice into context.' in small electric mint #4ade80 monospace text. Top-left: a minimal waveform icon (5 vertical bars of varying heights, electric mint). Bottom-right: subtle horizontal audio waveform decoration in low-opacity mint. Right side: three small text badges — '.ogg .mp3 .m4a' in muted white on very dark panels. No people. No gradients. No 3D effects. Dark, editorial, code-tool aesthetic.",
+    "negative_prompt": "gradient, glow, bokeh, blur, 3D, blob, mascot, human face, corporate stock photo, neon glow, rainbow, cluttered, busy layout, sans-serif default, Helvetica",
+    "model_hints": {
+      "dalle3": "Use exact hex colors. Prefer flat design. Aspect ratio 2:1.",
+      "midjourney": "--ar 2:1 --style raw --v 6",
+      "sdxl": "negative prompt critical. Use Latent Consistency Model for speed."
+    }
+  },
+  {
+    "name": "readme-hero",
+    "purpose": "Banner no topo do README.md — primeira imagem que um visitante vê no repositório",
+    "dimensions": "1280x400",
+    "format": "PNG",
+    "destination": ".github/assets/readme-hero.png",
+    "style_tokens": [
+      "ultra-wide banner",
+      "dark background",
+      "waveform motif",
+      "editorial layout",
+      "left-aligned text composition"
+    ],
+    "color_palette": {
+      "background": "#0d2218",
+      "accent": "#4ade80",
+      "text": "#f8f9f7"
+    },
+    "prompt": "Ultra-wide banner image for a GitHub README. Background: deep forest green #0d2218. Left side: large logotype 'Voca' in geometric sans-serif, near-white. Below it: tagline 'Turn voice into context.' in electric mint #4ade80. Right side: an abstract visualization of an audio waveform transforming into clean structured text lines — minimal, line-art style, monochrome mint on dark green. Center-right: three floating card outlines representing the pipeline steps: microphone icon → AI chip icon → document icon, connected by thin arrows. No photos. No people. Code-tool aesthetic, Vercel-inspired. Horizontal composition, significant negative space.",
+    "negative_prompt": "gradient, glow, 3D render, photorealistic, human, stock photo, bright background, white background, rainbow, neon",
+    "model_hints": {
+      "dalle3": "Aspect ratio ~3.2:1. Dark background mandatory.",
+      "midjourney": "--ar 32:10 --style raw --v 6 --no gradient"
+    }
+  },
+  {
+    "name": "demo-screenshot-upload",
+    "purpose": "Screenshot da UI no estado de upload — para README e site de portfólio",
+    "dimensions": "1200x800",
+    "format": "PNG",
+    "destination": ".github/assets/demo-upload.png",
+    "style_tokens": [
+      "UI screenshot",
+      "dark app UI",
+      "browser chrome optional",
+      "64px sidebar",
+      "centered upload zone"
+    ],
+    "color_palette": {
+      "background": "#0d2218",
+      "sidebar": "#0a1c14",
+      "card": "rgba(255,255,255,0.03)",
+      "border": "rgba(74,222,128,0.3)",
+      "accent": "#4ade80"
+    },
+    "prompt": "A realistic UI mockup screenshot of a minimal dark web application. Left: a 64px wide dark green sidebar with 4 small monochrome icons (waveform, home, history, user avatar). Main area: dark background #0d2218. Center: a large dashed-border upload zone card with a waveform icon at top, heading 'Arraste seu áudio aqui' in near-white, subtext '.ogg .mp3 .m4a .wav .opus .webm · até 25 MB' in muted mint, and a 'ou clique para selecionar' button outline in electric mint. Bottom of card: 3 horizontal step indicators labeled '1 Upload', '2 Transcrição', '3 Prompt'. Clean, functional, no decorative elements beyond the waveform icon. Browser chrome visible at top (macOS style, dark).",
+    "negative_prompt": "bright theme, white background, colorful gradients, 3D elements, photorealistic people, busy UI, many buttons",
+    "model_hints": {
+      "dalle3": "Render as flat UI mockup. Not a photo. Exact colors.",
+      "midjourney": "--ar 3:2 --style raw --v 6"
+    }
+  },
+  {
+    "name": "demo-screenshot-result",
+    "purpose": "Screenshot da UI no estado de resultado — prompt otimizado visível",
+    "dimensions": "1200x800",
+    "format": "PNG",
+    "destination": ".github/assets/demo-result.png",
+    "style_tokens": [
+      "UI screenshot",
+      "result card",
+      "two tabs",
+      "markdown rendered",
+      "copy button"
+    ],
+    "color_palette": {
+      "background": "#0d2218",
+      "card": "rgba(255,255,255,0.04)",
+      "tab_active": "#4ade80",
+      "code_surface": "#0a1c14"
+    },
+    "prompt": "A realistic UI mockup screenshot of a dark web application showing a transcription result. Left: same 64px dark sidebar as before. Main area: a result card with two tabs at top: 'Prompt otimizado' (active, electric mint underline) and 'Transcrição bruta' (inactive). Below the tabs: a dark surface panel displaying formatted Markdown text — a heading '## Tarefa' followed by structured bullet points in near-white monospace font, electric mint for heading text. Bottom of card: a row of action buttons — 'Copiar para LLM →' (filled mint), '↓ .md' and '↓ .json' (outlined), and 'Processar novo áudio' (ghost). Top of card: filename tag 'audio-20260423.ogg', duration badge '1m 32s', word count '247 palavras'. Clean, functional.",
+    "negative_prompt": "bright UI, white background, photos, people, 3D, gradient backgrounds",
+    "model_hints": {
+      "dalle3": "UI mockup only. Dark theme. Exact layout described.",
+      "midjourney": "--ar 3:2 --style raw --v 6"
+    }
+  },
+  {
+    "name": "logo-mark",
+    "purpose": "Ícone do repositório no GitHub + fonte para favicon e app icon",
+    "dimensions": "512x512",
+    "format": "PNG com fundo transparente ou #0d2218",
+    "destination": ".github/assets/logo-mark.png",
+    "style_tokens": [
+      "logo mark",
+      "icon only",
+      "waveform concept",
+      "geometric",
+      "single color accent"
+    ],
+    "color_palette": {
+      "background": "#0d2218",
+      "mark": "#4ade80"
+    },
+    "prompt": "A minimal logo mark for 'Voca', an AI voice tool. Square format 512x512. Background: deep forest green #0d2218. Center: an abstract waveform symbol made of 5 vertical bars of varying heights (pattern: short, medium, tall, medium, short — like an audio equalizer), rendered in electric mint #4ade80. Bars are rounded at tops, evenly spaced, proportional. Below the waveform: the letter 'V' in a geometric sans-serif, same mint color, small. Entire mark is centered with generous padding. Ultra-minimal, icon-ready, recognizable at 32px.",
+    "negative_prompt": "complex illustration, gradients, shadows, multiple colors, photorealistic, text beyond the letter V, decorative swirls, 3D",
+    "model_hints": {
+      "dalle3": "Vector-style icon. Exact colors only. Transparent or dark background.",
+      "midjourney": "--ar 1:1 --style raw --v 6 --no gradient shadow"
+    }
+  },
+  {
+    "name": "og-share",
+    "purpose": "Open Graph para páginas do app deployado — exibido ao compartilhar links no WhatsApp, Twitter, etc.",
+    "dimensions": "1200x630",
+    "format": "PNG",
+    "destination": "public/og-image.png",
+    "style_tokens": [
+      "og image",
+      "app share card",
+      "dark",
+      "branded",
+      "url visible"
+    ],
+    "color_palette": {
+      "background": "#0d2218",
+      "accent": "#4ade80",
+      "text": "#f8f9f7"
+    },
+    "prompt": "Open Graph share image for a web app called Voca. Background: deep forest green #0d2218. Top-left: small waveform icon (5 mint bars) + wordmark 'Voca' in geometric sans-serif, near-white. Center: large headline 'Turn voice into context.' in near-white, display typeface, left-aligned. Below headline: tagline 'Transcreva. Otimize. Cole no LLM.' in electric mint #4ade80, smaller. Bottom row: three small pill badges — 'OpenAI Whisper', 'GPT', 'Next.js' — dark surface with mint text. Bottom-right: domain 'voca.vercel.app' in muted white. No photos. Flat, editorial, code-tool aesthetic. Consistent with the social-preview card.",
+    "negative_prompt": "gradient, 3D, photos, people, mascot, bright background, cluttered",
+    "model_hints": {
+      "dalle3": "Aspect ratio ~1.9:1. Dark background. Flat design.",
+      "midjourney": "--ar 19:10 --style raw --v 6"
+    }
+  }
+]

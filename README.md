@@ -2,83 +2,121 @@
 
 > Transforme mensagens de voz em prompts estruturados, prontos para colar em qualquer LLM.
 
-![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss&logoColor=white)
-![Prisma](https://img.shields.io/badge/Prisma-7-2D3748?logo=prisma)
-![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+[![CI](https://github.com/euvhmac/prj-voca-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/euvhmac/prj-voca-ai/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/euvhmac/prj-voca-ai/actions/workflows/codeql.yml/badge.svg)](https://github.com/euvhmac/prj-voca-ai/actions/workflows/codeql.yml)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma)](https://prisma.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
+[![Deploy on Vercel](https://img.shields.io/badge/Deploy%20on-Vercel-black?logo=vercel)](https://vercel.com/new/clone?repository-url=https://github.com/euvhmac/prj-voca-ai)
 
 ---
 
-## O que é o Voca?
+<!--
+  HERO IMAGE PLACEHOLDER
+  Substitua pelo banner gerado via .github/assets/image-prompts.json
+  <p align="center">
+    <img src=".github/assets/readme-hero.png" alt="Voca — Turn voice into context" width="100%" />
+  </p>
+-->
 
-Voca é uma ferramenta web que aceita arquivos de áudio (mensagens de voz do WhatsApp, gravações .mp3, .ogg, etc.) e devolve:
+## O que é
 
-1. **Transcrição bruta** — via OpenAI Whisper (`gpt-4o-mini-transcribe`)
-2. **Prompt otimizado** — via GPT (`gpt-5.4-mini`), sem vícios de linguagem, estruturado para LLMs
-3. **Histórico pessoal** — todas as transcrições ficam salvas, filtrável e exportável
+Você manda uma mensagem de voz no WhatsApp pensando em voz alta — sem estrutura, com vícios de linguagem, sem contexto claro. O Voca pega esse áudio e devolve um prompt cirúrgico, pronto para colar no ChatGPT, Claude ou Gemini.
 
-**Tagline:** *Turn voice into context.*
+**Entrada:** arquivo de áudio (`.ogg`, `.mp3`, `.m4a`, `.wav`, `.opus`, `.webm` · até 25 MB)  
+**Saída:** transcrição bruta + prompt otimizado em Markdown · exportável como `.md` ou `.json`
+
+Tudo salvo no seu histórico pessoal.
 
 ---
 
-## Stack
+## Como funciona
 
-| Camada | Tecnologia |
-|---|---|
-| Framework | Next.js 16 (App Router, TypeScript strict) |
-| Estilo | Tailwind CSS v4 + CSS custom properties |
-| Auth | Auth.js v5 — Google, LinkedIn, email/senha |
-| ORM | Prisma v7 + Neon (serverless Postgres) |
-| IA — Transcrição | OpenAI `gpt-4o-mini-transcribe` |
-| IA — Otimização | OpenAI `gpt-5.4-mini` |
-| Deploy | Vercel |
+```
+┌──────────────────┐    ┌──────────────────────┐    ┌─────────────────────┐
+│  1. Suba o       │    │  2. A IA transcreve   │    │  3. Cole no LLM     │
+│     áudio        │───▶│     e reestrutura     │───▶│     de sua escolha  │
+│  (drag & drop)   │    │  (Whisper + GPT)      │    │  (ChatGPT, Claude…) │
+└──────────────────┘    └──────────────────────┘    └─────────────────────┘
+```
+
+1. **Transcrição** via `gpt-4o-mini-transcribe` — suporta português e 99+ idiomas
+2. **Otimização** via `gpt-5.4-mini` — remove vícios, identifica a tarefa central, estrutura como prompt rico
+3. **Persistência** em Neon serverless Postgres via Prisma — histórico sempre disponível
+
+---
+
+## Stack técnica
+
+| Camada | Tecnologia | Por quê |
+|---|---|---|
+| Framework | Next.js 16 (App Router) | SSR, API routes, middleware no edge — tudo em um deploy |
+| Linguagem | TypeScript strict | Sem `any` — erros em build, não em runtime |
+| Estilo | Tailwind CSS v4 + CSS custom props | Design system com tokens versionados, sem UI lib externa |
+| Auth | Auth.js v5 | OAuth (Google) + Credentials em ~50 linhas de config |
+| ORM | Prisma v6 + Neon serverless | Queries type-safe, migrations versionadas, Postgres gerenciado |
+| IA · Transcrição | `gpt-4o-mini-transcribe` | Melhor custo/qualidade para PT-BR, output `verbose_json` com duração |
+| IA · Otimização | `gpt-5.4-mini` | Prompt engineering server-side, graceful degradation se falhar |
+| Testes | Vitest | 90+ testes unitários com mocks de Prisma/OpenAI/Next.js |
+| Deploy | Vercel | Zero config, preview por PR, edge middleware nativo |
 
 ---
 
 ## Funcionalidades
 
-- Upload por clique ou drag-and-drop (.ogg, .mp3, .m4a, .wav, .opus, .webm — até 25 MB)
-- Transcrição + prompt otimizado com indicador de progresso em tempo real
-- Login com Google, LinkedIn ou email/senha
-- Histórico paginado com busca e deleção
-- Export do resultado como `.md` ou `.json`
-- Design system próprio (Deep Forest · Soft Canvas · Electric Mint)
-- Toasts de feedback, páginas 404/error branded, acessibilidade (WCAG AA focus rings, aria-live)
+- **Upload** por clique ou drag-and-drop — validação de MIME + magic bytes server-side
+- **Pipeline completo** — transcrição → otimização → persistência em uma requisição
+- **Autenticação** — Google OAuth + email/senha (bcrypt custo 12)
+- **Histórico** — lista paginada, detail panel, delete com UI otimista
+- **Export** — `.md` e `.json` com todos os metadados
+- **Segurança** — rate limiting, headers OWASP (CSP, HSTS, XFO…), magic-byte validation
+- **Design system próprio** — Deep Forest · Soft Canvas · Electric Mint
+- **LGPD** — política de privacidade, termos, FAQ, cookie banner
 
 ---
 
 ## Configuração local
 
-### 1. Clone e instale dependências
+### Pré-requisitos
+
+- Node.js 20+
+- Conta no [Neon](https://neon.tech) (free tier suficiente)
+- Conta na [OpenAI](https://platform.openai.com)
+- OAuth app no [Google Cloud Console](https://console.cloud.google.com)
+
+### 1. Clone e instale
 
 ```bash
-git clone https://github.com/SEU_USUARIO/voca.git
-cd voca
+git clone https://github.com/euvhmac/prj-voca-ai.git
+cd prj-voca-ai
 npm install
 ```
 
 ### 2. Variáveis de ambiente
 
-Copie `.env.example` para `.env.local` e preencha os valores:
-
 ```bash
 cp .env.example .env.local
 ```
 
-Veja a seção abaixo para obter cada chave.
+| Variável | Como obter |
+|---|---|
+| `NEXTAUTH_SECRET` | `openssl rand -base64 32` |
+| `NEXTAUTH_URL` | `http://localhost:3000` em dev |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | [console.cloud.google.com](https://console.cloud.google.com) → Credentials |
+| `DATABASE_URL` | Neon → Connection string (pooled) |
+| `DATABASE_URL_UNPOOLED` | Neon → Connection string (direct) |
+| `OPENAI_API_KEY` | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 
 ### 3. Banco de dados
 
 ```bash
-# Criar e aplicar migrations
-npx prisma migrate dev
-
-# (opcional) Visualizar o banco
-npx prisma studio
+npx prisma migrate dev    # aplica o schema no Neon
+npx prisma generate       # gera o Prisma Client
 ```
 
-### 4. Iniciar servidor de desenvolvimento
+### 4. Servidor de desenvolvimento
 
 ```bash
 npm run dev
@@ -88,82 +126,78 @@ Acesse [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## Variáveis de ambiente
-
-| Variável | Onde obter |
-|---|---|
-| `NEXTAUTH_SECRET` | Gere com `openssl rand -base64 32` |
-| `NEXTAUTH_URL` | `http://localhost:3000` em dev |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | [console.cloud.google.com](https://console.cloud.google.com) |
-| `LINKEDIN_CLIENT_ID` / `LINKEDIN_CLIENT_SECRET` | [linkedin.com/developers](https://www.linkedin.com/developers/) |
-| `DATABASE_URL` | Neon → Connection string (pooled) |
-| `DATABASE_URL_UNPOOLED` | Neon → Connection string (direct) |
-| `OPENAI_API_KEY` | [platform.openai.com](https://platform.openai.com) |
-
----
-
 ## Scripts
 
 ```bash
-npm run dev          # Servidor dev com Turbopack
-npm run build        # Build de produção
-npm run lint         # ESLint
-npm run test         # Testes unitários (Vitest)
-npm run test:watch   # Vitest em modo watch
-npx tsc --noEmit     # Checagem de tipos
+npm run dev             # Servidor dev (Turbopack)
+npm run build           # Build de produção
+npm run lint            # ESLint
+npm test                # Vitest — 90+ testes unitários
+npm run test:watch      # Vitest em modo watch
+npx tsc --noEmit        # Type-check
 npx prisma migrate dev  # Criar/aplicar migrations
-npx prisma generate  # Regenerar Prisma Client
+npx prisma studio       # GUI do banco
 ```
 
 ---
 
-## Estrutura do projeto
+## Estrutura
 
 ```
-app/
-  (app)/          ← Rotas protegidas (upload, histórico)
-  (auth)/         ← Login
-  api/            ← Route handlers (auth, transcribe, transcriptions)
-  globals.css     ← Design system (tokens, keyframes)
-components/
-  features/       ← Componentes específicos (upload, history, auth)
-  ui/             ← Componentes base (sidebar, toast, icons)
-lib/
-  ai/             ← Wrappers OpenAI (transcrição, otimizador)
-  auth/           ← Config Auth.js
-  db/             ← Prisma client + repositories
-  services/       ← Serviço de transcrição
-  validations/    ← Schemas Zod
-prisma/
-  schema.prisma
+voca/
+├── app/
+│   ├── (app)/              ← Rotas protegidas
+│   │   ├── page.tsx         ← Upload + resultado
+│   │   └── history/         ← Histórico paginado
+│   ├── (auth)/login/        ← Auth (OAuth + Credentials)
+│   ├── (legal)/             ← Privacidade, Termos, FAQ
+│   └── api/
+│       ├── auth/            ← Auth.js handlers
+│       ├── transcribe/      ← POST — pipeline completo
+│       └── transcriptions/  ← GET list · GET :id · DELETE :id
+├── components/
+│   ├── features/            ← upload/, history/, auth/
+│   └── ui/                  ← sidebar/, toast/, footer/, icons/
+├── lib/
+│   ├── ai/                  ← Wrappers OpenAI
+│   ├── auth/                ← Config Auth.js
+│   ├── db/                  ← Prisma client + repositories
+│   ├── security/            ← Rate limiter + magic-byte validator
+│   ├── services/            ← Serviço de transcrição
+│   └── validations/         ← Schemas Zod
+├── prisma/schema.prisma
+└── __tests__/unit/          ← 90+ testes Vitest
 ```
+
+---
+
+## Segurança
+
+Auditado contra OWASP Top 10. Detalhes em [.github/security-audit.md](.github/security-audit.md).
+
+Encontrou uma vulnerabilidade? Leia [SECURITY.md](SECURITY.md) antes de abrir uma issue pública.
 
 ---
 
 ## Contribuindo
 
-Veja [CONTRIBUTING.md](CONTRIBUTING.md).
+PRs são bem-vindos! Leia [CONTRIBUTING.md](CONTRIBUTING.md) primeiro.
+
+Bugs e sugestões: [Issues](https://github.com/euvhmac/prj-voca-ai/issues).
+
+---
+
+## Roadmap
+
+- [ ] Deploy em produção (Sprint 13)
+- [ ] Rate limiting distribuído com Upstash Redis
+- [ ] CSP nonce-based (substituir `unsafe-inline`)
+- [ ] 2FA com TOTP para contas Credentials
+- [ ] Suporte a múltiplos idiomas no optimizer
 
 ---
 
 ## Licença
 
-[MIT](LICENSE)
+[MIT](LICENSE) © 2026
 
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

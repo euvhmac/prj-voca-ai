@@ -1,0 +1,68 @@
+name: Bug Report
+description: Reportar um comportamento inesperado no Voca
+title: "[bug] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reservar um tempo para reportar este bug!
+        Preencha os campos abaixo para nos ajudar a reproduzir e corrigir o problema.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição do problema
+      description: O que aconteceu? O que deveria ter acontecido?
+      placeholder: "Ao fazer upload de um arquivo .ogg, a página mostra um erro 500 em vez do resultado esperado."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+      description: Descreva como reproduzir o bug de forma consistente.
+      placeholder: |
+        1. Acesse '/'
+        2. Faça upload de um arquivo .ogg de 5 MB
+        3. Aguarde o processamento
+        4. Veja o erro
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento esperado
+      description: O que deveria ter acontecido?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto adicional
+      description: |
+        Screenshots, logs de console, mensagem de erro exata.
+        Para erros de API, inclua o status HTTP e a resposta JSON (sem dados sensíveis).
+
+  - type: input
+    id: node_version
+    attributes:
+      label: Versão do Node.js
+      placeholder: "ex: 20.11.0"
+
+  - type: input
+    id: os
+    attributes:
+      label: Sistema operacional
+      placeholder: "ex: Windows 11, macOS 14, Ubuntu 22.04"
+
+  - type: input
+    id: browser
+    attributes:
+      label: Navegador (se aplicável)
+      placeholder: "ex: Chrome 124, Firefox 125"
