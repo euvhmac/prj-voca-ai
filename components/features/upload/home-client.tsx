@@ -9,7 +9,6 @@ import {
   ResultCard,
   AnimatedHero,
   WaveformBackdrop,
-  HowItWorks,
 } from '@/components/features/upload';
 import { WaveformIcon } from '@/components/ui/icons/waveform-icon';
 import { useToast } from '@/components/ui/toast';
@@ -136,6 +135,43 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
                   headline="Turn voice into context."
                   subline="Envie um áudio do WhatsApp, gravação ou reunião e receba um prompt estruturado, pronto para colar em qualquer LLM — ChatGPT, Claude, Gemini."
                 />
+
+                {/* Como funciona — lista compacta no painel verde */}
+                <ol className="mt-4 flex flex-col gap-3 animate-fade-up" style={{ animationDelay: '0.45s' }}>
+                  {[
+                    { n: '01', t: 'Suba o áudio', d: 'WhatsApp, gravação, reunião — até 25 MB.' },
+                    { n: '02', t: 'IA transcreve e otimiza', d: 'Texto limpo, reescrito como prompt estruturado.' },
+                    { n: '03', t: 'Cole no LLM', d: 'Pronto para ChatGPT, Claude, Gemini ou onde quiser.' },
+                  ].map((s) => (
+                    <li key={s.n} className="flex items-start gap-3">
+                      <span
+                        className="shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full text-[11px] font-semibold"
+                        style={{
+                          fontFamily: 'var(--font-jetbrains-mono)',
+                          color: '#4ade80',
+                          background: 'rgba(74,222,128,0.10)',
+                          border: '1px solid rgba(74,222,128,0.25)',
+                        }}
+                      >
+                        {s.n}
+                      </span>
+                      <div className="flex flex-col gap-0.5">
+                        <span
+                          className="text-[13.5px] font-semibold"
+                          style={{ fontFamily: 'var(--font-dm-sans)', color: '#f0fdf4' }}
+                        >
+                          {s.t}
+                        </span>
+                        <span
+                          className="text-[12.5px] leading-snug"
+                          style={{ fontFamily: 'var(--font-dm-sans)', color: 'rgba(240,253,244,0.55)' }}
+                        >
+                          {s.d}
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
               </div>
 
               {/* Tagline rodapé do painel */}
@@ -174,16 +210,6 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
                 </div>
               </div>
             </section>
-          </div>
-
-          {/* ── Como funciona — full-width, abaixo do fold ── */}
-          <div
-            className="px-6 py-16 md:px-12 md:py-24"
-            style={{ backgroundColor: '#f8f9f7' }}
-          >
-            <div className="max-w-[1100px] mx-auto">
-              <HowItWorks />
-            </div>
           </div>
 
           {/* Hint de rolagem para descobrir o footer institucional */}
