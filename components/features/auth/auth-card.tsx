@@ -229,13 +229,13 @@ export function AuthCard({ error, callbackUrl = '/' }: AuthCardProps) {
         style={{ fontFamily: 'var(--font-dm-sans)', color: '#9ca3af' }}
       >
         Ao continuar, você concorda com os{' '}
-        <span className="underline cursor-pointer" style={{ color: '#6b7280' }}>
+        <a href="/terms" className="underline hover:text-[#374151] transition-colors" style={{ color: '#6b7280' }}>
           Termos de Uso
-        </span>{' '}
+        </a>{' '}
         e a{' '}
-        <span className="underline cursor-pointer" style={{ color: '#6b7280' }}>
+        <a href="/privacy" className="underline hover:text-[#374151] transition-colors" style={{ color: '#6b7280' }}>
           Política de Privacidade
-        </span>
+        </a>
         .
       </p>
     </div>
