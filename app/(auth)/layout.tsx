@@ -1,4 +1,5 @@
 import { WaveformIcon } from '@/components/ui/icons/waveform-icon';
+import { Footer } from '@/components/ui/footer/footer';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -6,7 +7,8 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-1 flex">
       {/* ── Painel esquerdo — Deep Forest (oculto em mobile) ── */}
       <div
         className="hidden md:flex md:w-[52%] flex-col justify-between p-12"
@@ -129,6 +131,8 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       >
         {children}
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }
