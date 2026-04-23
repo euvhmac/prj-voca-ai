@@ -97,31 +97,33 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
   const isIdle = state.phase === 'idle';
   const showHowItWorks = !isAuthenticated && isIdle;
 
-  // ── Estado idle: hero band Deep Forest no topo + upload em Soft Canvas ──
+  // ── Estado idle ────────────────────────────────────────────
   if (isIdle) {
-    return (
-      <div className="flex flex-col">
-        {/* ── Faixa superior — Deep Forest, brand + hero ── */}
-        <section
-          className="relative overflow-hidden px-6 pt-12 pb-16 md:px-12 md:pt-16 md:pb-24"
-          style={{ backgroundColor: '#0d2218' }}
-          aria-label="Apresentação do Voca"
-        >
-          <BrandBandArt />
-          <div className="relative z-10 max-w-[860px] mx-auto flex flex-col gap-7">
+    // Anônimo: split-screen igual ao login — alto impacto visual
+    if (!isAuthenticated) {
+      return (
+        <div className="flex flex-col md:flex-row md:min-h-[calc(100vh-58px)]">
+          {/* ── Painel esquerdo — Deep Forest, brand pane ── */}
+          <aside
+            className="relative overflow-hidden flex flex-col justify-between gap-10 px-7 py-10 md:w-[52%] md:px-12 md:py-14"
+            style={{ backgroundColor: '#0d2218' }}
+            aria-label="Apresentação do Voca"
+          >
+            <BrandPaneArt />
+
             {/* Logo */}
-            <div className="flex items-center gap-3 animate-fade-up">
-              <WaveformIcon size={30} color="#4ade80" />
+            <div className="relative z-10 flex items-center gap-3 animate-fade-up">
+              <WaveformIcon size={32} color="#4ade80" />
               <span
-                className="text-[24px] font-extrabold tracking-[-0.5px]"
+                className="text-[26px] font-extrabold tracking-[-0.6px]"
                 style={{ fontFamily: 'var(--font-syne)', color: '#f0fdf4' }}
               >
                 Voca
               </span>
             </div>
 
-            {/* Kicker + hero */}
-            <div className="flex flex-col gap-4">
+            {/* Hero */}
+            <div className="relative z-10 flex flex-col gap-5">
               <span
                 className="text-[11px] font-medium tracking-[2.5px] uppercase animate-fade-up"
                 style={{ fontFamily: 'var(--font-dm-sans)', color: '#4ade80' }}
@@ -134,30 +136,67 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
                 subline="Envie um áudio do WhatsApp, gravação ou reunião e receba um prompt estruturado, pronto para colar em qualquer LLM — ChatGPT, Claude, Gemini."
               />
             </div>
-          </div>
-        </section>
 
-        {/* ── Área inferior — Soft Canvas, upload + how-it-works ── */}
-        <section
-          className="relative px-6 pt-12 pb-16 md:px-12 md:pt-16 md:pb-20"
-          style={{ backgroundColor: '#f8f9f7' }}
-          aria-live="polite"
-        >
-          <div className="max-w-[720px] mx-auto flex flex-col gap-12 relative z-10">
-            <div className="relative animate-fade-up" style={{ animationDelay: '0.2s' }}>
-              <WaveformBackdrop />
-              <div className="relative z-10">
+            {/* Tagline rodapé do painel */}
+            <div className="relative z-10 flex flex-col gap-2 animate-fade-up" style={{ animationDelay: '0.6s' }}>
+              <p
+                className="text-[12px] tracking-[0.5px]"
+                style={{ fontFamily: 'var(--font-dm-sans)', color: 'rgba(240,253,244,0.45)' }}
+              >
+                .ogg · .mp3 · .m4a · .wav · .opus · .webm — até 25MB
+              </p>
+              <p
+                className="text-[11.5px]"
+                style={{ fontFamily: 'var(--font-dm-sans)', color: 'rgba(240,253,244,0.30)' }}
+              >
+                Processado pela OpenAI · sem armazenamento permanente do áudio
+              </p>
+            </div>
+          </aside>
+
+          {/* ── Painel direito — Soft Canvas, área de upload ── */}
+          <section
+            className="flex-1 flex items-start md:items-center justify-center px-6 py-10 md:px-10 md:py-16"
+            style={{ backgroundColor: '#f8f9f7' }}
+            aria-live="polite"
+          >
+            <div className="w-full max-w-[540px] flex flex-col gap-10">
+              <div className="animate-fade-up" style={{ animationDelay: '0.2s' }}>
                 <UploadZone
                   onFile={handleFile}
                   error={state.error}
                   isAuthenticated={isAuthenticated}
                 />
               </div>
+              {showHowItWorks && <HowItWorks />}
             </div>
+          </section>
 
-            {showHowItWorks && <HowItWorks />}
-          </div>
-        </section>
+          {/* Hint de rolagem para descobrir o footer institucional */}
+          <ScrollHint />
+        </div>
+      );
+    }
+
+    // Autenticado: clean, coluna única larga (layout original)
+    return (
+      <div className="relative flex flex-col min-h-screen px-6 py-12 md:px-12 md:py-20">
+        <div className="w-full max-w-[680px] mx-auto flex flex-col gap-10 relative z-10">
+          <AnimatedHero
+            headline="Turn voice into context."
+            subline="Envie um áudio, gravação ou reunião e receba um prompt estruturado, pronto para colar em qualquer LLM."
+          />
+          <main aria-live="polite" className="relative">
+            <WaveformBackdrop />
+            <div className="relative animate-fade-up" style={{ animationDelay: '0.2s' }}>
+              <UploadZone
+                onFile={handleFile}
+                error={state.error}
+                isAuthenticated={isAuthenticated}
+              />
+            </div>
+          </main>
+        </div>
       </div>
     );
   }
@@ -226,43 +265,89 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
 }
 
 /**
- * Arte ambiente do hero band Deep Forest no topo da home.
+ * Hint flutuante no canto inferior — sinaliza ao usuário anônimo que há
+ * informações institucionais (FAQ, privacidade, termos) abaixo do fold.
+ * Rola suavemente até o footer ao clicar.
+ */
+function ScrollHint() {
+  function scrollToFooter() {
+    const footer = document.querySelector('footer');
+    footer?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={scrollToFooter}
+      aria-label="Ver informações institucionais"
+      className="hidden md:flex fixed bottom-6 right-6 z-30 items-center gap-2 px-4 py-2.5 rounded-full
+        bg-[#0d2218]/90 backdrop-blur-sm text-[#f0fdf4] text-[12.5px] font-medium
+        shadow-[0_8px_24px_rgba(13,34,24,0.25)]
+        hover:bg-[#0d2218] hover:-translate-y-0.5
+        transition-all duration-200
+        focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none
+        animate-fade-up"
+      style={{ fontFamily: 'var(--font-dm-sans)', animationDelay: '1.2s' }}
+    >
+      <span>Sobre · FAQ</span>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        aria-hidden="true"
+        className="animate-bounce-soft"
+      >
+        <path
+          d="M7 2v9M3 7l4 4 4-4"
+          stroke="#4ade80"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+}
+
+/**
+ * Arte ambiente do painel esquerdo da home anônima (Deep Forest).
  * Glows mint + waveform horizontal sutil. `aria-hidden`.
  */
-function BrandBandArt() {
+function BrandPaneArt() {
   const bars = [
     18, 30, 42, 26, 16, 32, 48, 28, 14, 24, 40, 32, 20, 12, 30, 44, 34, 18, 28, 22,
-    16, 32, 46, 28, 20, 14, 26, 38, 32, 18, 28, 42, 34, 22, 16, 30, 44, 28, 18, 26,
+    16, 32, 46, 28, 20, 14, 26, 38, 32, 18, 28, 42, 34, 22, 16, 30,
   ];
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       <div
         className="absolute"
         style={{
-          top: '-30%',
-          right: '-10%',
-          width: 540,
-          height: 540,
+          top: '-15%',
+          right: '-20%',
+          width: 480,
+          height: 480,
           background:
-            'radial-gradient(circle at center, rgba(74,222,128,0.22) 0%, rgba(74,222,128,0.05) 45%, transparent 70%)',
+            'radial-gradient(circle at center, rgba(74,222,128,0.22) 0%, rgba(74,222,128,0.06) 45%, transparent 70%)',
           filter: 'blur(8px)',
         }}
       />
       <div
         className="absolute"
         style={{
-          bottom: '-40%',
-          left: '-10%',
-          width: 420,
-          height: 420,
+          bottom: '-20%',
+          left: '-15%',
+          width: 360,
+          height: 360,
           background:
             'radial-gradient(circle at center, rgba(74,222,128,0.10) 0%, transparent 65%)',
           filter: 'blur(12px)',
         }}
       />
       <div
-        className="absolute inset-x-0 bottom-6 flex items-end justify-center gap-[5px] animate-ambient-pan"
-        style={{ opacity: 0.18 }}
+        className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center gap-[5px] animate-ambient-pan"
+        style={{ opacity: 0.28 }}
       >
         {bars.map((h, i) => (
           <span
