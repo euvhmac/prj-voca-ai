@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { prisma } from '@/lib/db/client';
+import { rateLimit, clientIp } from '@/lib/security/rate-limit';
 
 const RegisterSchema = z.object({
   name: z.string().min(2, 'Nome deve ter no mínimo 2 caracteres').max(100),
@@ -13,6 +14,26 @@ const RegisterSchema = z.object({
 });
 
 export async function POST(request: Request): Promise<NextResponse> {
+  // Rate limit por IP: 5 registros / 15min
+  // Protege contra account-spam e enumeração de email
+  const ip = clientIp(request);
+  const limit = rateLimit({
+    key: `register:${ip}`,
+    max: 5,
+    windowMs: 15 * 60_000,
+  });
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: 'Muitas tentativas. Tente novamente mais tarde.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((limit.resetAt - Date.now()) / 1000)),
+        },
+      },
+    );
+  }
+
   try {
     const body: unknown = await request.json();
     const parsed = RegisterSchema.safeParse(body);
@@ -28,8 +49,10 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
+      // Mensagem genérica para não vazar existência de email
+      // (defesa contra enumeração cf. A07)
       return NextResponse.json(
-        { error: 'Este email já está cadastrado.' },
+        { error: 'Não foi possível concluir o cadastro.' },
         { status: 409 },
       );
     }
