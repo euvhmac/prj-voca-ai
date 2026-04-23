@@ -13,7 +13,7 @@ export function Footer() {
 
   return (
     <footer
-      className="w-full mt-16"
+      className="w-full"
       style={{
         borderTop: '1px solid #e5e7eb',
         backgroundColor: '#f8f9f7',

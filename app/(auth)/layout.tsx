@@ -7,8 +7,7 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-1 flex">
+    <div className="min-h-screen flex">
       {/* ── Painel esquerdo — Deep Forest (oculto em mobile) ── */}
       <div
         className="hidden md:flex md:w-[52%] flex-col justify-between p-12"
@@ -124,15 +123,16 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         </p>
       </div>
 
-      {/* ── Painel direito — Soft Canvas ── */}
+      {/* ── Painel direito — Soft Canvas + footer institucional ── */}
       <div
-        className="flex-1 flex items-center justify-center px-6 py-12"
+        className="flex-1 flex flex-col"
         style={{ backgroundColor: '#f8f9f7' }}
       >
-        {children}
+        <div className="flex-1 flex items-center justify-center px-6 py-12">
+          {children}
+        </div>
+        <Footer />
       </div>
-      </div>
-      <Footer />
     </div>
   );
 }
