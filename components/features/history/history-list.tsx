@@ -6,6 +6,7 @@ import type { TranscriptionListItem } from '@/lib/types';
 import { fetchHistory } from '@/lib/api/history';
 import { HistoryItem } from '@/components/features/history/history-item';
 import { HistoryDetail } from '@/components/features/history/history-detail';
+import { useToast } from '@/components/ui/toast';
 
 interface HistoryListProps {
   initialItems: TranscriptionListItem[];
@@ -20,6 +21,7 @@ export function HistoryList({ initialItems, initialHasMore, initialTotal }: Hist
   const [loadingMore, setLoadingMore] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
+  const { toast } = useToast();
 
   const handleSelect = useCallback((id: string) => {
     setSelectedId(id);
@@ -37,7 +39,8 @@ export function HistoryList({ initialItems, initialHasMore, initialTotal }: Hist
       setSelectedId(null);
       setMobileDetailOpen(false);
     }
-  }, [selectedId]);
+    toast('Transcrição removida', 'success');
+  }, [selectedId, toast]);
 
   const handleLoadMore = useCallback(async () => {
     setLoadingMore(true);

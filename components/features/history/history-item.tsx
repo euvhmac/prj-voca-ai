@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import type { TranscriptionListItem } from '@/lib/types';
 import { deleteTranscription } from '@/lib/api/history';
+import { useToast } from '@/components/ui/toast';
 
 interface HistoryItemProps {
   item: TranscriptionListItem;
@@ -56,6 +57,7 @@ function formatDuration(seconds: number | null): string | null {
 export function HistoryItem({ item, isSelected, onSelect, onDelete }: HistoryItemProps) {
   const [confirming, setConfirming] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const { toast } = useToast();
 
   const handleDeleteClick = useCallback(
     (e: React.MouseEvent) => {
@@ -72,9 +74,10 @@ export function HistoryItem({ item, isSelected, onSelect, onDelete }: HistoryIte
         .catch(() => {
           setDeleting(false);
           setConfirming(false);
+          toast('Falha ao remover transcrição. Tente novamente.', 'error');
         });
     },
-    [confirming, item.id, onDelete],
+    [confirming, item.id, onDelete, toast],
   );
 
   const handleCancelDelete = useCallback((e: React.MouseEvent) => {
