@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     <div className="min-h-screen flex">
       {/* ── Painel esquerdo — Deep Forest (oculto em mobile) ── */}
       <div
-        className="hidden md:flex md:w-[52%] flex-col justify-between p-12"
+        className="hidden md:flex md:w-[40%] flex-col justify-between p-12"
         style={{ backgroundColor: '#0d2218' }}
       >
         {/* Logo */}

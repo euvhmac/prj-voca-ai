@@ -106,7 +106,7 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
           <div className="flex flex-col md:flex-row min-h-screen">
           {/* ── Painel esquerdo — Deep Forest, brand pane ── */}
           <aside
-            className="relative overflow-hidden flex flex-col justify-between gap-10 px-7 py-10 md:w-[52%] md:px-12 md:py-14"
+            className="relative overflow-hidden flex flex-col justify-between gap-10 px-7 py-10 md:w-[40%] md:px-12 md:py-14"
             style={{ backgroundColor: '#0d2218' }}
             aria-label="Apresentação do Voca"
           >
