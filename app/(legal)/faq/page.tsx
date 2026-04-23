@@ -87,7 +87,7 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
         Você pode excluir cada transcrição individualmente pela página de
         histórico. Para excluir a conta inteira (e todo o histórico
         associado), envie um e-mail para{' '}
-        <a href="mailto:voca@vhmac.dev">voca@vhmac.dev</a>. Removemos em até
+        <a href="mailto:victor@vhmac.com">victor@vhmac.com</a>. Removemos em até
         30 dias, conforme previsto na LGPD.
       </p>
     ),
@@ -125,8 +125,8 @@ export default function FaqPage() {
         </h1>
         <p className="mt-3 text-[14.5px] text-[#6b7280]" style={{ fontFamily: 'var(--font-dm-sans)' }}>
           Não achou sua dúvida aqui? Escreva para{' '}
-          <a href="mailto:voca@vhmac.dev" className="text-[#16a34a] underline underline-offset-2">
-            voca@vhmac.dev
+          <a href="mailto:victor@vhmac.com" className="text-[#16a34a] underline underline-offset-2">
+            victor@vhmac.com
           </a>
           .
         </p>

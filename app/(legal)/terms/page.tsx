@@ -74,7 +74,7 @@ export default function TermsPage() {
           </li>
           <li>
             Você pode pedir a exclusão da sua conta a qualquer momento por
-            e-mail (<a href="mailto:voca@vhmac.dev">voca@vhmac.dev</a>).
+            e-mail (<a href="mailto:victor@vhmac.com">victor@vhmac.com</a>).
           </li>
         </ul>
       </Section>
