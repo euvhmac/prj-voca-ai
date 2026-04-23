@@ -3,15 +3,19 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 
-type Provider = 'google' | 'linkedin';
+type Provider = 'google';
 
-export function SocialLoginButtons() {
+interface SocialLoginButtonsProps {
+  callbackUrl?: string;
+}
+
+export function SocialLoginButtons({ callbackUrl = '/' }: SocialLoginButtonsProps) {
   const [loading, setLoading] = useState<Provider | null>(null);
 
   async function handleSignIn(provider: Provider): Promise<void> {
     setLoading(provider);
     try {
-      await signIn(provider, { callbackUrl: '/' });
+      await signIn(provider, { callbackUrl });
     } catch {
       // signIn redireciona em caso de sucesso — erro aqui é inesperado
       setLoading(null);
@@ -39,18 +43,6 @@ export function SocialLoginButtons() {
       >
         {loading === 'google' ? <Spinner /> : <GoogleIcon />}
         Continuar com Google
-      </button>
-
-      {/* LinkedIn */}
-      <button
-        onClick={() => handleSignIn('linkedin')}
-        disabled={loading !== null}
-        className={btnClass}
-        style={{ fontFamily: 'var(--font-dm-sans)' }}
-        aria-label="Entrar com LinkedIn"
-      >
-        {loading === 'linkedin' ? <Spinner /> : <LinkedInIcon />}
-        Continuar com LinkedIn
       </button>
     </div>
   );
@@ -107,29 +99,6 @@ function GoogleIcon() {
       <path
         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
         fill="#EA4335"
-      />
-    </svg>
-  );
-}
-
-function LinkedInIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="flex-shrink-0"
-    >
-      <rect width="24" height="24" rx="4" fill="#0A66C2" />
-      <path
-        d="M7.5 10H5V19H7.5V10ZM6.25 8.75C5.56 8.75 5 8.19 5 7.5C5 6.81 5.56 6.25 6.25 6.25C6.94 6.25 7.5 6.81 7.5 7.5C7.5 8.19 6.94 8.75 6.25 8.75Z"
-        fill="white"
-      />
-      <path
-        d="M19 19H16.5V14.5C16.5 13.4 15.6 12.5 14.5 12.5C13.4 12.5 12.5 13.4 12.5 14.5V19H10V10H12.5V11.25C13.12 10.47 14.06 10 15.12 10C17.26 10 19 11.74 19 13.88V19Z"
-        fill="white"
       />
     </svg>
   );

@@ -1,4 +1,5 @@
 import { WaveformIcon } from '@/components/ui/icons/waveform-icon';
+import { Footer } from '@/components/ui/footer/footer';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -9,7 +10,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     <div className="min-h-screen flex">
       {/* ── Painel esquerdo — Deep Forest (oculto em mobile) ── */}
       <div
-        className="hidden md:flex md:w-[52%] flex-col justify-between p-12"
+        className="hidden md:flex md:w-[45%] flex-col justify-between p-12"
         style={{ backgroundColor: '#0d2218' }}
       >
         {/* Logo */}
@@ -122,12 +123,15 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         </p>
       </div>
 
-      {/* ── Painel direito — Soft Canvas ── */}
+      {/* ── Painel direito — Soft Canvas + footer institucional ── */}
       <div
-        className="flex-1 flex items-center justify-center px-6 py-12"
+        className="flex-1 flex flex-col"
         style={{ backgroundColor: '#f8f9f7' }}
       >
-        {children}
+        <div className="flex-1 flex items-center justify-center px-6 py-12">
+          {children}
+        </div>
+        <Footer compact />
       </div>
     </div>
   );

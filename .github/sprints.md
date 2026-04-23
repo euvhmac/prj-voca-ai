@@ -19,6 +19,11 @@
 | 06 | Frontend | `feature/sprint-06-frontend-upload` | Upload page + processing flow |
 | 07 | Frontend | `feature/sprint-07-frontend-history` | History page + transcription detail |
 | 08 | Frontend | `feature/sprint-08-export-polish` | Export features + UI polish |
+| 09 | Frontend | `feature/sprint-09-landing-ux` | Public landing UX + upload visual upgrade |
+| 10 | Frontend | `feature/sprint-10-legal-pages` | Legal pages, FAQ, footer, cookie banner |
+| 11 | Backend  | `feature/sprint-11-security-audit` | OWASP audit + hardening |
+| 12 | Full-Stack | `feature/sprint-12-github-docs` | Showcase docs + AI image prompts |
+| 13 | Full-Stack | `feature/sprint-13-vercel-deploy` | Production deploy on Vercel |
 
 ---
 
@@ -434,6 +439,269 @@ App is publicly deployable. README is ready for GitHub showcase. PR merged to `d
 | 06 | Frontend | High | Upload + result flow |
 | 07 | Frontend | Medium | History page |
 | 08 | Frontend | Low-Medium | Polish + open-source |
+| 09 | Frontend | Medium | Public landing + upload visual upgrade |
+| 10 | Frontend | Low | Legal pages + FAQ + cookie banner |
+| 11 | Backend  | Medium-High | Security audit + hardening |
+| 12 | Full-Stack | Medium | GitHub docs + AI image prompts |
+| 13 | Full-Stack | Low-Medium | Production deploy on Vercel |
 
 **Backend complete:** after Sprint 04 → merge `dev → main` with tag `v0.1.0-backend`  
-**Full app v1.0:** after Sprint 08 → merge `dev → main` with tag `v1.0.0`
+**Full app v1.0:** after Sprint 08 → merge `dev → main` with tag `v1.0.0`  
+**Public landing v1.1:** after Sprint 09 → tag `v1.1.0`  
+**Compliance v1.2:** after Sprint 10 → tag `v1.2.0`  
+**Hardened v1.3:** after Sprint 11 → tag `v1.3.0`  
+**Showcase v1.4:** after Sprint 12 → tag `v1.4.0`  
+**Live in production v1.5:** after Sprint 13 → tag `v1.5.0` 🚀
+
+---
+
+---
+
+# POST-LAUNCH SPRINTS
+
+---
+
+## Sprint 09 — Landing UX & Upload Visual
+
+**Agent:** Frontend Senior  
+**Branch:** `feature/sprint-09-landing-ux`  
+**Depends on:** Sprint 08 (full app functional)  
+**Deliverable:** Public-facing landing page with intent-first auth flow and elevated upload experience
+
+### Objectives
+
+Shift the app from a walled-garden flow (login required to see anything) to an intent-first product: visitors land directly on the upload page, experience the value proposition immediately, and are only asked to authenticate when they actually try to process audio. Elevate the upload page visually so it carries the weight of being the public face of the product — without breaking the minimalist tone.
+
+### Tasks — Public flow
+
+1. Remove `/` from `middleware.ts` matcher — the root route becomes public
+2. Refactor `app/(app)/layout.tsx` — remove the unconditional auth redirect; sidebar renders only when `session` exists
+3. In `upload-zone.tsx`, intercept the file submission: if no session, call `signIn(undefined, { callbackUrl: '/' })` instead of starting the upload
+4. Ensure `callbackUrl` propagates correctly through OAuth and Credentials flows back to `/`
+5. Update `app/(auth)/login/page.tsx` to forward `callbackUrl` to all `signIn()` calls
+
+### Tasks — Visual upgrade
+
+6. **Animated hero headline** — letter-by-letter or word-by-word fade-in for *“Turn voice into context.”*
+7. **Decorative waveform background** — subtle, `aria-hidden`, behind the upload zone, low opacity, respects `prefers-reduced-motion`
+8. **Upload zone presence** — increase footprint on desktop, animated mint gradient sweep on the dashed border, more pronounced hover state
+9. **Drag-over micro-interaction** — `transform: scale(1.02)`, expanded shadow, saturated background tint
+10. **“Como funciona” section** — 3 horizontal steps below the upload zone, visible only to unauthenticated visitors (1. Suba o áudio · 2. A IA transcreve e otimiza · 3. Cole no LLM)
+11. **Supported-formats pills** — discreet badges: `.ogg .mp3 .m4a .wav .opus .webm · até 25 MB`
+12. **State transition** — when the file drops, hero collapses with a faster `fadeUp` and the processing card enters with extra energy
+
+### Acceptance Criteria
+
+- [ ] Unauthenticated visitor sees the full landing page (no automatic redirect)
+- [ ] Attempting upload without session redirects to `/login?callbackUrl=/`
+- [ ] After authentication, user lands back on `/` and can upload immediately
+- [ ] Sidebar renders only for authenticated users
+- [ ] “Como funciona” section is hidden for authenticated users
+- [ ] All animations respect `prefers-reduced-motion`
+- [ ] No layout shift between authenticated and unauthenticated states (skeleton during session check)
+- [ ] `npx tsc --noEmit` passes
+- [ ] `npm run lint` passes
+
+### Definition of Done
+
+Flow tested end-to-end as anonymous visitor: land → drop file → redirect to login → log in → return to `/` → upload completes successfully. PR merged to `dev` with tag `v1.1.0`.
+
+---
+
+## Sprint 10 — Legal Pages, FAQ & Cookie Banner
+
+**Agent:** Frontend Senior  
+**Branch:** `feature/sprint-10-legal-pages`  
+**Depends on:** Sprint 09 (public landing exists)  
+**Deliverable:** LGPD-compliant institutional pages, persistent footer, FAQ, and cookie consent
+
+### Objectives
+
+Make the app legally and ethically presentable to the Brazilian public. Cover LGPD basics (privacy policy, terms, cookie awareness, data subject rights) without corporate inflation — tone is honest, direct, and signals “personal portfolio project that takes data seriously.”
+
+### Tasks
+
+1. Create `app/(legal)/layout.tsx` — minimalist layout: header with logo + name, footer with legal links
+2. Create `app/(legal)/privacy/page.tsx` — what data is collected, why, third parties (OpenAI, Google, LinkedIn, Neon, Vercel), retention, LGPD subject rights, contact channel
+3. Create `app/(legal)/terms/page.tsx` — service offered as-is (portfolio project), no SLA, audio is processed by third-party AI, user content rules, liability limitation
+4. Create `app/(legal)/faq/page.tsx` — 8 questions: O que é o Voca? · Como a IA transcreve e entrega contexto? · Meus dados estão seguros? · Meu áudio vai para a OpenAI? · Quais formatos são suportados? · O serviço é gratuito? · Como deleto meus dados? · O código é aberto?
+5. Create `components/ui/footer/footer.tsx` — Server Component, links to all legal pages + contact email + GitHub repo link
+6. Inject Footer into `app/(app)/layout.tsx` and `app/(auth)/layout.tsx`
+7. Create `components/ui/cookie-banner/cookie-banner.tsx` — Client Component using `localStorage` flag, dismissible banner with link to `/privacy`
+8. Inject CookieBanner into `app/layout.tsx`
+
+### Acceptance Criteria
+
+- [ ] `/privacy`, `/terms`, `/faq` accessible without authentication, no sidebar
+- [ ] Footer with all institutional links visible across the app
+- [ ] Cookie banner appears on first visit only, persists dismissal in `localStorage`
+- [ ] Each legal page mentions the relevant third parties (OpenAI, Google, LinkedIn, Neon, Vercel)
+- [ ] FAQ answers are honest, brief, and link to other legal pages where relevant
+- [ ] Tone is informal but responsible — no corporate boilerplate
+- [ ] All pages keep the design system tokens consistent
+- [ ] `npx tsc --noEmit` passes
+- [ ] `npm run lint` passes
+
+### Definition of Done
+
+All three legal pages live, footer present everywhere, cookie banner working. PR merged to `dev` with tag `v1.2.0`.
+
+---
+
+## Sprint 11 — Security Audit & Hardening
+
+**Agent:** Backend Senior  
+**Branch:** `feature/sprint-11-security-audit`  
+**Depends on:** Sprint 10  
+**Deliverable:** OWASP Top 10 audit completed with all critical findings fixed and rate limiting in place
+
+### Objectives
+
+Walk through OWASP Top 10 against the Voca codebase, document each finding (OK / FIXED / DEFERRED), and apply concrete hardening on the highest-impact vectors: file upload, database access, authentication, and data exposure. The goal is a project that looks (and is) trustworthy enough for real users.
+
+### Tasks
+
+1. **A01 — Broken Access Control:** verify every `GET`/`DELETE /api/transcriptions/:id` includes `userId` in the `WHERE` clause; review `middleware.ts` matcher
+2. **A02 — Cryptographic Failures:** confirm bcrypt cost ≥ 12; confirm `NEXTAUTH_SECRET` entropy; confirm cookies have `HttpOnly`, `Secure`, `SameSite=Lax`
+3. **A03 — Injection:** confirm Prisma uses parameterized queries everywhere; audit any raw SQL or JSON metadata interpolation
+4. **A04 — Insecure Design:** add rate limiting to `POST /api/transcribe` and `POST /api/auth/register` (in-memory bucket or Upstash Redis if budget allows)
+5. **A05 — Security Misconfiguration:** add `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` via `next.config.ts` `headers()`; confirm `.env.local` is gitignored
+6. **A06 — Vulnerable Components:** `npm audit` — fix high/critical findings; check outdated dependencies
+7. **A07 — Authentication Failures:** brute-force test on `/api/auth/register` and Credentials login; ensure failed login attempts are rate-limited; verify session expiry
+8. **A08 — Data Integrity:** validate audio file size **server-side** (don’t trust client); validate MIME via magic bytes (e.g. `file-type` lib), not just extension
+9. **A09 — Logging Failures:** audit logs for any leakage of `OPENAI_API_KEY`, `DATABASE_URL`, or stack traces returned to clients
+10. **A10 — SSRF:** confirm no user input constructs outbound URLs
+11. Document findings in `.github/security-audit.md` (one line per OWASP item: OK · FIXED · DEFERRED with reason)
+
+### Acceptance Criteria
+
+- [ ] `npm audit` reports zero high/critical vulnerabilities
+- [ ] `curl -I https://localhost:3000/` shows all expected security headers
+- [ ] Rate limiting active and verifiable on `/api/transcribe` and `/api/auth/register`
+- [ ] 100% of data endpoints scoped by `userId`
+- [ ] Audio uploads validated by magic bytes server-side
+- [ ] No stack traces in production error responses
+- [ ] `.github/security-audit.md` exists and covers all 10 OWASP items
+- [ ] `npx tsc --noEmit` passes
+- [ ] `npm run lint` passes
+
+### Definition of Done
+
+Security audit document published, all FIXED items merged. PR merged to `dev` with tag `v1.3.0`.
+
+---
+
+## Sprint 12 — GitHub Docs & Showcase Identity
+
+**Agent:** Full-Stack  
+**Branch:** `feature/sprint-12-github-docs`  
+**Depends on:** Sprints 10 + 11  
+**Deliverable:** Repository ready to attract GitHub stars — community health files complete, README rewritten as showcase, AI image-generation prompts ready for visual assets
+
+### Objectives
+
+Transform the repository into a portfolio-grade open-source project. Two angles: (1) GitHub Community Health files that signal seriousness to recruiters and contributors, and (2) a structured set of AI image-generation prompts that the user can run on Nano Banana / DALL-E / Midjourney to produce branded visual assets aligned with the Voca identity.
+
+### Tasks — README & Community Health
+
+1. Rewrite `README.md` as a true showcase: hero banner image, badge row (stack, CI, license, deploy), animated GIF of the upload flow, “How it works” diagram, “Tech decisions” section explaining why each choice was made, structured architecture map, roadmap, contributing CTA
+2. Create `.github/ISSUE_TEMPLATE/bug_report.yml` — structured bug template
+3. Create `.github/ISSUE_TEMPLATE/feature_request.yml` — structured feature request template
+4. Create `.github/PULL_REQUEST_TEMPLATE.md` — PR checklist
+5. Create `CODE_OF_CONDUCT.md` — Contributor Covenant 2.1
+6. Create `SECURITY.md` — responsible vulnerability disclosure channel
+7. Update `.github/workflows/ci.yml` — run `tsc`, `lint`, `vitest` on PRs to `dev` and `main`
+8. Add `.github/workflows/codeql.yml` — GitHub CodeQL automatic security scanning
+9. (Optional) `.github/FUNDING.yml` — GitHub Sponsors / Buy me a coffee
+10. Add GitHub repo topics: `nextjs`, `openai`, `whisper`, `typescript`, `prisma`, `tailwindcss`, `ai`, `voice`, `portuguese`, `lgpd`
+
+### Tasks — AI Image Prompts (visual identity)
+
+11. Create `.github/assets/image-prompts.json` — structured prompts for every visual asset, optimized for Nano Banana / DALL-E 3 / SDXL / Midjourney v6. Include for each asset: `name`, `purpose`, `dimensions`, `style_tokens`, `color_palette`, `prompt`, `negative_prompt`, `model_hints`
+12. Cover at minimum:
+    - `social-preview` (1280×640) — GitHub Open Graph card
+    - `readme-hero` (1280×400) — top banner of README
+    - `demo-screenshot-upload` (1200×800) — composition showing the upload state
+    - `demo-screenshot-result` (1200×800) — composition showing the result card
+    - `logo-mark` (512×512) — repository icon / favicon source
+    - `og-share` (1200×630) — Open Graph for the deployed app pages
+13. Tone of all prompts: minimalist tech, editorial, Linear/Vercel/Railway aesthetic — Deep Forest `#0d2218` + Soft Canvas `#f8f9f7` + Electric Mint `#4ade80`. Avoid: gradients clichês, mascote, ilustração corporativa genérica, “3D blobby objects”, “Silicon Valley startup feel”
+14. Document under `.github/assets/README.md` how to use the prompts and where to drop the generated images
+
+### Acceptance Criteria
+
+- [ ] README renders correctly on GitHub with all badges working
+- [ ] Hero image and demo GIF embedded in README (after generation)
+- [ ] Issue templates appear automatically when opening a new issue on GitHub
+- [ ] PR template auto-fills the description on every PR
+- [ ] CodeQL runs on every PR without blocking merges
+- [ ] `CODE_OF_CONDUCT.md` and `SECURITY.md` present
+- [ ] GitHub Community Health profile shows all six recommended files ✅
+- [ ] `image-prompts.json` validates as JSON, contains at least 6 asset definitions, each with full metadata and tone aligned to the brand
+- [ ] Repository topics set on GitHub
+- [ ] `npx tsc --noEmit` passes
+- [ ] `npm run lint` passes
+
+### Definition of Done
+
+Repo passes the GitHub “Community Profile” check at 100%. Image prompts ready to be executed by the user. PR merged to `dev` with tag `v1.4.0`.
+
+---
+
+## Sprint 13 — Production Deploy on Vercel
+
+**Agent:** Full-Stack  
+**Branch:** `feature/sprint-13-vercel-deploy`  
+**Depends on:** Sprint 12  
+**Deliverable:** Voca live on Vercel with production database, configured OAuth, working end-to-end
+
+### Objectives
+
+Ship Voca to production. Configure Neon production branch, set up OAuth callback URLs for the live domain, configure all environment variables in Vercel, and run a full health check across the deployed app.
+
+### Tasks
+
+1. **Neon — production branch**
+   - Confirm `main` branch on Neon has all migrations applied (`npx prisma migrate deploy`)
+   - Verify `DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED` (direct) for migrations
+   - Confirm SSL is enforced in the connection string
+2. **OAuth — production redirect URIs**
+   - Google Cloud Console: add `https://<prod-domain>/api/auth/callback/google`
+   - LinkedIn Developer Portal: add `https://<prod-domain>/api/auth/callback/linkedin`
+   - Update `NEXTAUTH_URL` to the production domain
+   - Generate fresh `NEXTAUTH_SECRET` for production (different from dev)
+3. **Vercel — project setup**
+   - Connect the GitHub repository to a Vercel project
+   - Configure all env vars in `Settings → Environment Variables` (Production scope)
+   - Set `main` as the production branch, `dev` as the preview branch
+4. **Pre-deploy checklist**
+   - `npm run build` passes locally (mirrors Vercel build)
+   - `npx prisma migrate deploy` against production DB
+   - No `console.log` leaking sensitive data in any deployed file
+5. **Post-deploy health check**
+   - Production URL loads the public landing
+   - Google OAuth completes in production
+   - LinkedIn OAuth completes in production
+   - Email/password registration + login works
+   - Real audio upload completes the full pipeline (transcription + optimization + persistence)
+   - History page persists across sessions
+   - `.md` and `.json` downloads work
+   - `/privacy`, `/terms`, `/faq` accessible without login
+   - `curl -I` confirms security headers present in production
+6. **Final tagging & README update**
+   - Tag `v1.5.0` on `main`
+   - Update README with “Deploy on Vercel” badge linking to live URL
+   - Add live demo link prominently in the README hero section
+
+### Acceptance Criteria
+
+- [ ] Production URL publicly accessible
+- [ ] Full user flow works in production: visit → drop file → login → process → result → history
+- [ ] Vercel deployment log shows zero errors
+- [ ] Lighthouse score in production: Performance ≥ 80, Accessibility ≥ 90, SEO ≥ 90
+- [ ] README shows live demo badge and link
+- [ ] Tag `v1.5.0` pushed to GitHub
+
+### Definition of Done
+
+Voca is publicly live, fully functional, and the README points to it. Project portfolio-ready for sharing. 🚀

@@ -39,9 +39,10 @@ const initialFormState: FormState = { status: 'idle', error: null };
 
 interface AuthCardProps {
   error?: string;
+  callbackUrl?: string;
 }
 
-export function AuthCard({ error }: AuthCardProps) {
+export function AuthCard({ error, callbackUrl = '/' }: AuthCardProps) {
   const [tab, setTab] = useState<AuthTab>('login');
   const [loginState, loginDispatch] = useReducer(formReducer, initialFormState);
   const [registerState, registerDispatch] = useReducer(formReducer, initialFormState);
@@ -67,7 +68,7 @@ export function AuthCard({ error }: AuthCardProps) {
     }
 
     loginDispatch({ type: 'SUCCESS' });
-    router.push('/');
+    router.push(callbackUrl);
     router.refresh();
   }
 
@@ -107,7 +108,7 @@ export function AuthCard({ error }: AuthCardProps) {
     }
 
     registerDispatch({ type: 'SUCCESS' });
-    router.push('/');
+    router.push(callbackUrl);
     router.refresh();
   }
 
@@ -150,23 +151,30 @@ export function AuthCard({ error }: AuthCardProps) {
         </div>
       )}
 
-      {/* Tab toggle */}
+      {/* Tab toggle — sliding pill */}
       <div
-        className="flex rounded-[10px] p-1 gap-0.5 mb-7 bg-[#eff1ee]"
+        className="relative flex rounded-[10px] p-1 mb-7 bg-[#eff1ee]"
         role="tablist"
         aria-label="Tipo de acesso"
       >
+        {/* Sliding pill indicator */}
+        <span
+          aria-hidden="true"
+          className="absolute top-1 bottom-1 rounded-[7px] bg-white transition-all duration-200 ease-in-out"
+          style={{
+            width: 'calc(50% - 4px)',
+            left: tab === 'login' ? 4 : 'calc(50%)',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
+          }}
+        />
         <button
           role="tab"
           aria-selected={tab === 'login'}
           onClick={() => setTab('login')}
           style={{ fontFamily: 'var(--font-dm-sans)' }}
-          className={`flex-1 py-2 rounded-[7px] text-[13.5px] transition-all duration-150
+          className={`relative z-10 flex-1 py-2 rounded-[7px] text-[13.5px] transition-colors duration-150
             focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none
-            ${tab === 'login'
-              ? 'bg-white text-[#0d2218] font-semibold shadow-[0_1px_4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.04)]'
-              : 'bg-transparent text-[#6b7280] font-medium hover:text-[#374151]'
-            }`}
+            ${ tab === 'login' ? 'text-[#0d2218] font-semibold' : 'text-[#6b7280] font-medium hover:text-[#374151]' }`}
         >
           Entrar
         </button>
@@ -175,12 +183,9 @@ export function AuthCard({ error }: AuthCardProps) {
           aria-selected={tab === 'register'}
           onClick={() => setTab('register')}
           style={{ fontFamily: 'var(--font-dm-sans)' }}
-          className={`flex-1 py-2 rounded-[7px] text-[13.5px] transition-all duration-150
+          className={`relative z-10 flex-1 py-2 rounded-[7px] text-[13.5px] transition-colors duration-150
             focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none
-            ${tab === 'register'
-              ? 'bg-white text-[#0d2218] font-semibold shadow-[0_1px_4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.04)]'
-              : 'bg-transparent text-[#6b7280] font-medium hover:text-[#374151]'
-            }`}
+            ${ tab === 'register' ? 'text-[#0d2218] font-semibold' : 'text-[#6b7280] font-medium hover:text-[#374151]' }`}
         >
           Criar conta
         </button>
@@ -220,7 +225,7 @@ export function AuthCard({ error }: AuthCardProps) {
       </div>
 
       {/* OAuth buttons */}
-      <SocialLoginButtons />
+      <SocialLoginButtons callbackUrl={callbackUrl} />
 
       {/* Footer */}
       <p
@@ -228,13 +233,13 @@ export function AuthCard({ error }: AuthCardProps) {
         style={{ fontFamily: 'var(--font-dm-sans)', color: '#9ca3af' }}
       >
         Ao continuar, você concorda com os{' '}
-        <span className="underline cursor-pointer" style={{ color: '#6b7280' }}>
+        <a href="/terms" className="underline hover:text-[#374151] transition-colors" style={{ color: '#6b7280' }}>
           Termos de Uso
-        </span>{' '}
+        </a>{' '}
         e a{' '}
-        <span className="underline cursor-pointer" style={{ color: '#6b7280' }}>
+        <a href="/privacy" className="underline hover:text-[#374151] transition-colors" style={{ color: '#6b7280' }}>
           Política de Privacidade
-        </span>
+        </a>
         .
       </p>
     </div>
@@ -284,9 +289,12 @@ function SubmitButton({ loading, children }: { loading: boolean; children: React
       type="submit"
       disabled={loading}
       className="w-full py-2.5 rounded-[8px] text-[14px] font-semibold transition-all duration-150
+        bg-[#0d2218] text-[#f8f9f7]
+        hover:bg-[#16a34a] hover:-translate-y-px hover:shadow-[0_4px_16px_rgba(74,222,128,0.25)]
+        active:scale-[0.98] active:translate-y-0
         focus-visible:ring-2 focus-visible:ring-[#4ade80] focus-visible:outline-none
-        disabled:opacity-60 disabled:cursor-not-allowed"
-      style={{ fontFamily: 'var(--font-dm-sans)', backgroundColor: '#0d2218', color: '#f8f9f7' }}
+        disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-[#0d2218] disabled:hover:translate-y-0 disabled:hover:shadow-none"
+      style={{ fontFamily: 'var(--font-dm-sans)' }}
     >
       {loading ? (
         <span className="flex items-center justify-center gap-2">
