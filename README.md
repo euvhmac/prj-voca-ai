@@ -2,6 +2,8 @@
 
 > Transforme mensagens de voz em prompts estruturados, prontos para colar em qualquer LLM.
 
+**[→ voca.vhmac.com](https://voca.vhmac.com)**
+
 [![CI](https://github.com/euvhmac/prj-voca-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/euvhmac/prj-voca-ai/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/euvhmac/prj-voca-ai/actions/workflows/codeql.yml/badge.svg)](https://github.com/euvhmac/prj-voca-ai/actions/workflows/codeql.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -9,7 +11,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Prisma](https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma)](https://prisma.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
-[![Deploy on Vercel](https://img.shields.io/badge/Deploy%20on-Vercel-black?logo=vercel)](https://vercel.com/new/clone?repository-url=https://github.com/euvhmac/prj-voca-ai)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-voca.vhmac.com-4ade80?logo=vercel&logoColor=white)](https://voca.vhmac.com)
 
 ---
 
