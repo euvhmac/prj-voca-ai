@@ -1,0 +1,30 @@
+{
+  "name": "social-preview",
+  "purpose": "GitHub Open Graph card — exibido quando alguém compartilha o repositório no Twitter/LinkedIn/WhatsApp",
+  "dimensions": "1280x640",
+  "format": "PNG",
+  "destination": ".github/assets/social-preview.png",
+  "style_tokens": [
+    "minimalist tech editorial",
+    "Linear / Vercel / Railway aesthetic",
+    "negative space dominant",
+    "flat design with micro-depth",
+    "no gradients",
+    "no mascots",
+    "no 3D blobs",
+    "no stock photo elements"
+  ],
+  "color_palette": {
+    "background": "#0d2218",
+    "accent": "#4ade80",
+    "text_primary": "#f8f9f7",
+    "text_secondary": "rgba(248,249,247,0.5)"
+  },
+  "prompt": "A minimalist open-source project social card for 'Voca', a voice-to-context AI tool. Background: deep forest green #0d2218. Centered layout. Large sans-serif logotype 'Voca' in near-white #f8f9f7 using a geometric display typeface. Below the logotype, tagline 'Turn voice into context.' in small electric mint #4ade80 monospace text. Top-left: a minimal waveform icon (5 vertical bars of varying heights, electric mint). Bottom-right: subtle horizontal audio waveform decoration in low-opacity mint. Right side: three small text badges — '.ogg .mp3 .m4a' in muted white on very dark panels. No people. No gradients. No 3D effects. Dark, editorial, code-tool aesthetic.",
+  "negative_prompt": "gradient, glow, bokeh, blur, 3D, blob, mascot, human face, corporate stock photo, neon glow, rainbow, cluttered, busy layout, sans-serif default, Helvetica",
+  "model_hints": {
+    "dalle3": "Use exact hex colors. Prefer flat design. Aspect ratio 2:1.",
+    "midjourney": "--ar 2:1 --style raw --v 6",
+    "sdxl": "negative prompt critical. Use Latent Consistency Model for speed."
+  }
+}

@@ -13,15 +13,15 @@
 
 ---
 
-<!--
-  HERO IMAGE PLACEHOLDER
-  Substitua pelo banner gerado via .github/assets/image-prompts.json
-  <p align="center">
-    <img src=".github/assets/readme-hero.png" alt="Voca — Turn voice into context" width="100%" />
-  </p>
--->
+<p align="center">
+  <img src="img/readme-hero.png" alt="Voca — Turn voice into context" width="100%" />
+</p>
 
 ## O que é
+
+<p align="center">
+  <img src="img/login.png" alt="Tela de login do Voca" width="100%" />
+</p>
 
 Você manda uma mensagem de voz no WhatsApp pensando em voz alta — sem estrutura, com vícios de linguagem, sem contexto claro. O Voca pega esse áudio e devolve um prompt cirúrgico, pronto para colar no ChatGPT, Claude ou Gemini.
 
@@ -34,13 +34,9 @@ Tudo salvo no seu histórico pessoal.
 
 ## Como funciona
 
-```
-┌──────────────────┐    ┌──────────────────────┐    ┌─────────────────────┐
-│  1. Suba o       │    │  2. A IA transcreve   │    │  3. Cole no LLM     │
-│     áudio        │───▶│     e reestrutura     │───▶│     de sua escolha  │
-│  (drag & drop)   │    │  (Whisper + GPT)      │    │  (ChatGPT, Claude…) │
-└──────────────────┘    └──────────────────────┘    └─────────────────────┘
-```
+| Upload | Processamento | Resultado |
+|:---:|:---:|:---:|
+| <img src="img/box-upload.png" alt="Tela de upload" width="320" /> | <img src="img/process-steps.png" alt="Etapas de processamento" width="320" /> | <img src="img/history.png" alt="Histórico e resultado" width="320" /> |
 
 1. **Transcrição** via `gpt-4o-mini-transcribe` — suporta português e 99+ idiomas
 2. **Otimização** via `gpt-5.4-mini` — remove vícios, identifica a tarefa central, estrutura como prompt rico
@@ -200,4 +196,10 @@ Bugs e sugestões: [Issues](https://github.com/euvhmac/prj-voca-ai/issues).
 ## Licença
 
 [MIT](LICENSE) © 2026
+
+---
+
+<p align="center">
+  <img src="img/logo-mark.png" alt="Voca logo" width="120" />
+</p>
 

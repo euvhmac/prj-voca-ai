@@ -27,6 +27,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXTAUTH_URL ?? 'https://voca.vercel.app'
+  ),
   title: 'Voca — Turn voice into context',
   description:
     'Transforme mensagens de voz em prompts estruturados, prontos para colar em qualquer LLM. Transcrição com Whisper + otimização GPT.',
@@ -39,12 +42,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'pt_BR',
     siteName: 'Voca',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Voca — Turn voice into context' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Voca — Turn voice into context',
     description:
       'Transforme mensagens de voz em prompts estruturados, prontos para colar em qualquer LLM.',
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,
