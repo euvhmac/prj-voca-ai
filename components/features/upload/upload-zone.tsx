@@ -117,11 +117,7 @@ export function UploadZone({ onFile, error, isAuthenticated = true }: UploadZone
             className="text-[17px] font-semibold tracking-[-0.2px]"
             style={{ fontFamily: 'var(--font-syne)', color: '#0d2218' }}
           >
-            {isDragOver
-              ? 'Solte o arquivo aqui'
-              : isAuthenticated
-                ? 'Arraste seu áudio aqui'
-                : 'Suba seu primeiro áudio'}
+            {isDragOver ? 'Solte o arquivo aqui' : 'Arraste seu áudio aqui'}
           </p>
           <p
             className="text-[13.5px]"
@@ -131,11 +127,6 @@ export function UploadZone({ onFile, error, isAuthenticated = true }: UploadZone
             <span className="text-[#16a34a] font-semibold underline underline-offset-2">
               clique para selecionar
             </span>
-            {!isAuthenticated && (
-              <span className="block mt-1 text-[12px] text-[#9ca3af]">
-                Pediremos um login rápido antes de processar.
-              </span>
-            )}
           </p>
         </div>
 

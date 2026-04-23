@@ -4,16 +4,57 @@ import { WaveformIcon } from '@/components/ui/icons/waveform-icon';
 const GITHUB_URL = 'https://github.com/euvhmac/prj-voca-ai';
 const CONTACT_EMAIL = 'voca@vhmac.dev';
 
+interface FooterProps {
+  /** Quando `true`, renderiza versão compacta de uma linha — ideal para colunas estreitas (ex.: painel direito do login). */
+  compact?: boolean;
+}
+
 /**
  * Footer institucional — visível em todas as páginas autenticadas, públicas e legais.
  * Server Component: sem JS no cliente.
  */
-export function Footer() {
+export function Footer({ compact = false }: FooterProps = {}) {
   const year = new Date().getFullYear();
+
+  if (compact) {
+    return (
+      <footer
+        className="w-full"
+        style={{
+          borderTop: '1px solid #e5e7eb',
+          backgroundColor: '#f8f9f7',
+          fontFamily: 'var(--font-dm-sans)',
+        }}
+      >
+        <div className="px-6 py-5 flex flex-col gap-2 md:flex-row md:items-center md:justify-between text-[12px] text-[#6b7280]">
+          <span>© {year} Voca · Open-source MIT</span>
+          <nav className="flex items-center gap-4 flex-wrap">
+            <Link href="/privacy" className="hover:text-[#0d2218] transition-colors">
+              Privacidade
+            </Link>
+            <Link href="/terms" className="hover:text-[#0d2218] transition-colors">
+              Termos
+            </Link>
+            <Link href="/faq" className="hover:text-[#0d2218] transition-colors">
+              FAQ
+            </Link>
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#0d2218] transition-colors"
+            >
+              GitHub
+            </a>
+          </nav>
+        </div>
+      </footer>
+    );
+  }
 
   return (
     <footer
-      className="w-full mt-16"
+      className="w-full"
       style={{
         borderTop: '1px solid #e5e7eb',
         backgroundColor: '#f8f9f7',

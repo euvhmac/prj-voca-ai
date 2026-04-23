@@ -100,6 +100,12 @@ body {
   100% { opacity: 1; transform: translateY(0)   scale(1); }
 }
 
+/* Soft vertical bounce for the scroll-hint chevron. */
+@keyframes bounceSoft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+
 .animate-fade-up {
   animation: fadeUp 0.4s ease both;
 }
@@ -125,6 +131,10 @@ body {
 
 .animate-pop-in {
   animation: popIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-bounce-soft {
+  animation: bounceSoft 1.6s ease-in-out infinite;
 }
 
 /* Mint gradient ring around the upload zone (used as a ::before glow). */
