@@ -35,6 +35,13 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // Aumenta o limite de body para route handlers e Server Actions.
+  // Necessário para upload de áudios (default ~4 MB, nossa validação permite 25 MB).
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '25mb',
+    },
+  },
   async headers() {
     return [
       {
