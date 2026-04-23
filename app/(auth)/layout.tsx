@@ -131,7 +131,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         <div className="flex-1 flex items-center justify-center px-6 py-12">
           {children}
         </div>
-        <Footer />
+        <Footer compact />
       </div>
     </div>
   );

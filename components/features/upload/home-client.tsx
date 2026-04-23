@@ -8,6 +8,7 @@ import {
   ProcessingSteps,
   ResultCard,
   AnimatedHero,
+  WaveformBackdrop,
   HowItWorks,
 } from '@/components/features/upload';
 import { WaveformIcon } from '@/components/ui/icons/waveform-icon';
@@ -96,76 +97,64 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
   const isIdle = state.phase === 'idle';
   const showHowItWorks = !isAuthenticated && isIdle;
 
-  // ── Estado idle: split-screen Deep Forest + Soft Canvas ────
+  // ── Estado idle: hero band Deep Forest no topo + upload em Soft Canvas ──
   if (isIdle) {
     return (
-      <div className="flex flex-col md:flex-row md:min-h-[calc(100vh-180px)]">
-        {/* ── Painel esquerdo — Deep Forest, brand pane ── */}
-        <aside
-          className="relative overflow-hidden flex flex-col justify-between gap-10 px-7 py-10 md:w-[44%] md:px-12 md:py-14"
+      <div className="flex flex-col">
+        {/* ── Faixa superior — Deep Forest, brand + hero ── */}
+        <section
+          className="relative overflow-hidden px-6 pt-12 pb-16 md:px-12 md:pt-16 md:pb-24"
           style={{ backgroundColor: '#0d2218' }}
           aria-label="Apresentação do Voca"
         >
-          {/* Ambient art — radial mint glow + vertical mint streaks */}
-          <BrandPaneArt />
+          <BrandBandArt />
+          <div className="relative z-10 max-w-[860px] mx-auto flex flex-col gap-7">
+            {/* Logo */}
+            <div className="flex items-center gap-3 animate-fade-up">
+              <WaveformIcon size={30} color="#4ade80" />
+              <span
+                className="text-[24px] font-extrabold tracking-[-0.5px]"
+                style={{ fontFamily: 'var(--font-syne)', color: '#f0fdf4' }}
+              >
+                Voca
+              </span>
+            </div>
 
-          {/* Logo */}
-          <div className="relative z-10 flex items-center gap-3 animate-fade-up">
-            <WaveformIcon size={32} color="#4ade80" />
-            <span
-              className="text-[26px] font-extrabold tracking-[-0.6px]"
-              style={{ fontFamily: 'var(--font-syne)', color: '#f0fdf4' }}
-            >
-              Voca
-            </span>
+            {/* Kicker + hero */}
+            <div className="flex flex-col gap-4">
+              <span
+                className="text-[11px] font-medium tracking-[2.5px] uppercase animate-fade-up"
+                style={{ fontFamily: 'var(--font-dm-sans)', color: '#4ade80' }}
+              >
+                AI-Powered
+              </span>
+              <AnimatedHero
+                tone="light"
+                headline="Turn voice into context."
+                subline="Envie um áudio do WhatsApp, gravação ou reunião e receba um prompt estruturado, pronto para colar em qualquer LLM — ChatGPT, Claude, Gemini."
+              />
+            </div>
           </div>
+        </section>
 
-          {/* Hero */}
-          <div className="relative z-10 flex flex-col gap-5">
-            <span
-              className="text-[11px] font-medium tracking-[2.5px] uppercase animate-fade-up"
-              style={{ fontFamily: 'var(--font-dm-sans)', color: '#4ade80' }}
-            >
-              AI-Powered
-            </span>
-            <AnimatedHero
-              tone="light"
-              headline="Turn voice into context."
-              subline="Envie um áudio do WhatsApp, gravação ou reunião e receba um prompt estruturado, pronto para colar em qualquer LLM — ChatGPT, Claude, Gemini."
-            />
-          </div>
-
-          {/* Tagline rodapé do painel */}
-          <div className="relative z-10 flex flex-col gap-2 animate-fade-up" style={{ animationDelay: '0.6s' }}>
-            <p
-              className="text-[12px] tracking-[0.5px]"
-              style={{ fontFamily: 'var(--font-dm-sans)', color: 'rgba(240,253,244,0.45)' }}
-            >
-              .ogg · .mp3 · .m4a · .wav · .opus · .webm — até 25MB
-            </p>
-            <p
-              className="text-[11.5px]"
-              style={{ fontFamily: 'var(--font-dm-sans)', color: 'rgba(240,253,244,0.30)' }}
-            >
-              Processado pela OpenAI · sem armazenamento permanente do áudio
-            </p>
-          </div>
-        </aside>
-
-        {/* ── Painel direito — Soft Canvas, área de upload ── */}
+        {/* ── Área inferior — Soft Canvas, upload + how-it-works ── */}
         <section
-          className="flex-1 flex items-start md:items-center justify-center px-6 py-10 md:px-10 md:py-16"
+          className="relative px-6 pt-12 pb-16 md:px-12 md:pt-16 md:pb-20"
           style={{ backgroundColor: '#f8f9f7' }}
           aria-live="polite"
         >
-          <div className="w-full max-w-[540px] flex flex-col gap-10">
-            <div className="animate-fade-up" style={{ animationDelay: '0.2s' }}>
-              <UploadZone
-                onFile={handleFile}
-                error={state.error}
-                isAuthenticated={isAuthenticated}
-              />
+          <div className="max-w-[720px] mx-auto flex flex-col gap-12 relative z-10">
+            <div className="relative animate-fade-up" style={{ animationDelay: '0.2s' }}>
+              <WaveformBackdrop />
+              <div className="relative z-10">
+                <UploadZone
+                  onFile={handleFile}
+                  error={state.error}
+                  isAuthenticated={isAuthenticated}
+                />
+              </div>
             </div>
+
             {showHowItWorks && <HowItWorks />}
           </div>
         </section>
@@ -237,47 +226,43 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
 }
 
 /**
- * Arte ambiente do painel esquerdo da home (Deep Forest).
- * Variant claro do WaveformBackdrop — barras mint sobre fundo escuro
- * e gradiente radial central. `aria-hidden` (puramente decorativo).
+ * Arte ambiente do hero band Deep Forest no topo da home.
+ * Glows mint + waveform horizontal sutil. `aria-hidden`.
  */
-function BrandPaneArt() {
+function BrandBandArt() {
   const bars = [
     18, 30, 42, 26, 16, 32, 48, 28, 14, 24, 40, 32, 20, 12, 30, 44, 34, 18, 28, 22,
-    16, 32, 46, 28, 20, 14, 26, 38, 32, 18, 28, 42, 34, 22, 16, 30,
+    16, 32, 46, 28, 20, 14, 26, 38, 32, 18, 28, 42, 34, 22, 16, 30, 44, 28, 18, 26,
   ];
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Radial mint glow superior-direito */}
       <div
         className="absolute"
         style={{
-          top: '-15%',
-          right: '-20%',
-          width: 480,
-          height: 480,
+          top: '-30%',
+          right: '-10%',
+          width: 540,
+          height: 540,
           background:
-            'radial-gradient(circle at center, rgba(74,222,128,0.22) 0%, rgba(74,222,128,0.06) 45%, transparent 70%)',
+            'radial-gradient(circle at center, rgba(74,222,128,0.22) 0%, rgba(74,222,128,0.05) 45%, transparent 70%)',
           filter: 'blur(8px)',
         }}
       />
-      {/* Glow sutil inferior-esquerdo */}
       <div
         className="absolute"
         style={{
-          bottom: '-20%',
-          left: '-15%',
-          width: 360,
-          height: 360,
+          bottom: '-40%',
+          left: '-10%',
+          width: 420,
+          height: 420,
           background:
             'radial-gradient(circle at center, rgba(74,222,128,0.10) 0%, transparent 65%)',
           filter: 'blur(12px)',
         }}
       />
-      {/* Linha de waveform horizontal sutil no centro */}
       <div
-        className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center gap-[5px] animate-ambient-pan"
-        style={{ opacity: 0.28 }}
+        className="absolute inset-x-0 bottom-6 flex items-end justify-center gap-[5px] animate-ambient-pan"
+        style={{ opacity: 0.18 }}
       >
         {bars.map((h, i) => (
           <span
