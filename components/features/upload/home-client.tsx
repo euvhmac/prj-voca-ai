@@ -243,7 +243,7 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
 
   // ── Estados processing/done/error: layout focado, coluna única ──
   return (
-    <div className="px-6 py-12 md:px-12 md:py-20" style={{ backgroundColor: '#f8f9f7' }}>
+    <div className="min-h-screen px-6 py-12 md:px-12 md:py-20" style={{ backgroundColor: '#f8f9f7' }}>
       <div className="w-full max-w-[720px] mx-auto" aria-live="polite">
         {state.phase === 'processing' && (
           <div

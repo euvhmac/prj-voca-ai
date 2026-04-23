@@ -15,10 +15,10 @@ export default async function AppLayout({
   const isAuthenticated = !!session;
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: '#f8f9f7' }}>
+    <div className="flex" style={{ backgroundColor: '#f8f9f7' }}>
       {isAuthenticated && <Sidebar />}
-      <div className={`flex-1 min-h-screen flex flex-col ${isAuthenticated ? 'md:ml-16' : ''}`}>
-        <main className="flex-1">{children}</main>
+      <div className={`flex-1 flex flex-col ${isAuthenticated ? 'md:ml-16' : ''}`}>
+        <main className="min-h-screen">{children}</main>
         <Footer />
       </div>
     </div>

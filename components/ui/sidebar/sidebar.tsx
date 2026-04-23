@@ -86,6 +86,16 @@ function NavItem({ href, label, isActive, showDot, children }: NavItemProps) {
   );
 }
 
+function LegalIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M10 9v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="10" cy="6.5" r="0.75" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function Sidebar() {
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -122,6 +132,9 @@ export function Sidebar() {
         </NavItem>
         <NavItem href="/history" label="Histórico" isActive={pathname === '/history'} showDot>
           <HistoryIcon />
+        </NavItem>
+        <NavItem href="/faq" label="Legal & FAQ" isActive={pathname === '/faq' || pathname === '/privacy' || pathname === '/terms'}>
+          <LegalIcon />
         </NavItem>
       </nav>
 
