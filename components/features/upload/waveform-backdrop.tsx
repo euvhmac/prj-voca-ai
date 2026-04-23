@@ -18,7 +18,7 @@ export function WaveformBackdrop() {
       style={{ zIndex: 0 }}
     >
       <div
-        className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center gap-[6px] animate-ambient-pan"
+        className="absolute top-1/2 -translate-y-1/2 flex items-center justify-center gap-[6px] animate-ambient-pan w-full px-8"
         style={{ opacity: 0.12 }}
       >
         {bars.map((h, i) => (
