@@ -4,6 +4,7 @@ import { useReducer, useCallback } from 'react';
 import type { TranscriptionResult } from '@/lib/types';
 import { transcribeAudio, validateAudioFile } from '@/lib/api/transcriptions';
 import { UploadZone, ProcessingSteps, ResultCard } from '@/components/features/upload';
+import { useToast } from '@/components/ui/toast';
 
 // ── State machine ────────────────────────────────────────────
 type UploadState =
@@ -45,6 +46,7 @@ function reducer(state: UploadState, action: UploadAction): UploadState {
 // ── Component ────────────────────────────────────────────────
 export default function HomePage() {
   const [state, dispatch] = useReducer(reducer, { phase: 'idle', error: null });
+  const { toast } = useToast();
 
   const handleFile = useCallback(async (file: File) => {
     const validationError = validateAudioFile(file);
@@ -69,11 +71,13 @@ export default function HomePage() {
       dispatch({ type: 'STEP', step: 3 }); // Salvando
       await new Promise<void>((r) => setTimeout(r, 300));
       dispatch({ type: 'DONE', result });
+      toast('Transcrição concluída! Prompt pronto para usar.', 'success');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erro ao processar o áudio.';
       dispatch({ type: 'ERROR', message });
+      toast(message, 'error');
     }
-  }, []);
+  }, [toast]);
 
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 md:px-12">
