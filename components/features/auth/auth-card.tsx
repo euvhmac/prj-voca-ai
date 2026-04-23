@@ -39,9 +39,10 @@ const initialFormState: FormState = { status: 'idle', error: null };
 
 interface AuthCardProps {
   error?: string;
+  callbackUrl?: string;
 }
 
-export function AuthCard({ error }: AuthCardProps) {
+export function AuthCard({ error, callbackUrl = '/' }: AuthCardProps) {
   const [tab, setTab] = useState<AuthTab>('login');
   const [loginState, loginDispatch] = useReducer(formReducer, initialFormState);
   const [registerState, registerDispatch] = useReducer(formReducer, initialFormState);
@@ -67,7 +68,7 @@ export function AuthCard({ error }: AuthCardProps) {
     }
 
     loginDispatch({ type: 'SUCCESS' });
-    router.push('/');
+    router.push(callbackUrl);
     router.refresh();
   }
 
@@ -107,7 +108,7 @@ export function AuthCard({ error }: AuthCardProps) {
     }
 
     registerDispatch({ type: 'SUCCESS' });
-    router.push('/');
+    router.push(callbackUrl);
     router.refresh();
   }
 
@@ -220,7 +221,7 @@ export function AuthCard({ error }: AuthCardProps) {
       </div>
 
       {/* OAuth buttons */}
-      <SocialLoginButtons />
+      <SocialLoginButtons callbackUrl={callbackUrl} />
 
       {/* Footer */}
       <p

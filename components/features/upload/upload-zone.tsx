@@ -1,24 +1,34 @@
 'use client';
 
 import { useRef, useState, useCallback } from 'react';
+import { signIn } from 'next-auth/react';
 import { WaveformIcon } from '@/components/ui/icons/waveform-icon';
 
 interface UploadZoneProps {
   onFile: (file: File) => void;
   error: string | null;
+  /** When false, dropping/selecting a file redirects to /login instead of uploading. */
+  isAuthenticated?: boolean;
 }
 
 const ACCEPTED = '.ogg,.mp3,.m4a,.wav,.opus,.webm';
 
-export function UploadZone({ onFile, error }: UploadZoneProps) {
+export function UploadZone({ onFile, error, isAuthenticated = true }: UploadZoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
   const handleFile = useCallback(
     (file: File) => {
+      // Intent-first: visitante anônimo é redirecionado para autenticar
+      // antes do upload começar. callbackUrl=/ traz o usuário de volta para
+      // a home, onde ele pode reenviar o arquivo já autenticado.
+      if (!isAuthenticated) {
+        void signIn(undefined, { callbackUrl: '/' });
+        return;
+      }
       onFile(file);
     },
-    [onFile],
+    [onFile, isAuthenticated],
   );
 
   function handleDragOver(e: React.DragEvent<HTMLLabelElement>) {
@@ -50,45 +60,50 @@ export function UploadZone({ onFile, error }: UploadZoneProps) {
     <div className="w-full flex flex-col gap-3">
       <label
         htmlFor="audio-upload"
-        aria-label="Área de upload de áudio. Clique ou arraste um arquivo."
+        aria-label={
+          isAuthenticated
+            ? 'Área de upload de áudio. Clique ou arraste um arquivo.'
+            : 'Área de upload de áudio. Clique ou arraste — você será direcionado ao login antes de processar.'
+        }
+        data-dragover={isDragOver ? 'true' : 'false'}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`relative flex flex-col items-center justify-center gap-5 w-full
+        className={`upload-mint-ring relative z-10 flex flex-col items-center justify-center gap-6 w-full
           rounded-[18px] border-2 border-dashed cursor-pointer
           transition-all duration-200 outline-none select-none
           focus-visible:ring-2 focus-visible:ring-[#4ade80]
           ${isDragOver
-            ? 'border-[#4ade80] bg-[rgba(74,222,128,0.06)] shadow-[0_12px_40px_rgba(74,222,128,0.10)]'
-            : 'border-[#d1d5db] bg-white hover:border-[#4ade80] hover:bg-[rgba(74,222,128,0.03)]'
+            ? 'border-[#4ade80] bg-[rgba(74,222,128,0.08)] shadow-[0_24px_60px_rgba(74,222,128,0.18)] scale-[1.015]'
+            : 'border-[#d1d5db] bg-white/95 backdrop-blur-[2px] hover:border-[#4ade80] hover:bg-[rgba(74,222,128,0.04)] hover:-translate-y-px'
           }`}
-        style={{ minHeight: 260 }}
+        style={{ minHeight: 320 }}
       >
         {/* Waveform icon + animated bars */}
         <div className="flex flex-col items-center gap-4">
           <div
-            className={`flex items-center justify-center w-16 h-16 rounded-full transition-all duration-200 ${
+            className={`flex items-center justify-center w-20 h-20 rounded-full transition-all duration-200 ${
               isDragOver
-                ? 'bg-[rgba(74,222,128,0.12)]'
+                ? 'bg-[rgba(74,222,128,0.16)] animate-pulse-ring'
                 : 'bg-[rgba(74,222,128,0.06)]'
             }`}
           >
             <WaveformIcon
-              size={32}
-              color={isDragOver ? '#4ade80' : '#86efac'}
+              size={38}
+              color={isDragOver ? '#16a34a' : '#86efac'}
               className="transition-colors duration-200"
             />
           </div>
 
           {/* Animated wave bars — visible on drag */}
           {isDragOver && (
-            <div className="flex items-end gap-1 h-6" aria-hidden="true">
-              {[0, 0.15, 0.3, 0.15, 0].map((delay, i) => (
+            <div className="flex items-end gap-1 h-7" aria-hidden="true">
+              {[0, 0.1, 0.2, 0.3, 0.4, 0.3, 0.2, 0.1, 0].map((delay, i) => (
                 <div
                   key={i}
                   className="w-1 rounded-full bg-[#4ade80] animate-wave-bar"
                   style={{
-                    height: [12, 20, 24, 20, 12][i],
+                    height: [10, 14, 20, 26, 28, 26, 20, 14, 10][i],
                     animationDelay: `${delay}s`,
                   }}
                 />
@@ -97,26 +112,35 @@ export function UploadZone({ onFile, error }: UploadZoneProps) {
           )}
         </div>
 
-        <div className="flex flex-col items-center gap-1.5 px-6 text-center">
+        <div className="flex flex-col items-center gap-2 px-6 text-center">
           <p
-            className="text-[15px] font-semibold"
-            style={{ fontFamily: 'var(--font-syne)', color: '#111827' }}
+            className="text-[17px] font-semibold tracking-[-0.2px]"
+            style={{ fontFamily: 'var(--font-syne)', color: '#0d2218' }}
           >
-            {isDragOver ? 'Solte o arquivo aqui' : 'Arraste seu áudio aqui'}
+            {isDragOver
+              ? 'Solte o arquivo aqui'
+              : isAuthenticated
+                ? 'Arraste seu áudio aqui'
+                : 'Suba seu primeiro áudio'}
           </p>
           <p
-            className="text-[13px]"
+            className="text-[13.5px]"
             style={{ fontFamily: 'var(--font-dm-sans)', color: '#6b7280' }}
           >
             ou{' '}
-            <span className="text-[#16a34a] font-medium underline underline-offset-2">
+            <span className="text-[#16a34a] font-semibold underline underline-offset-2">
               clique para selecionar
             </span>
+            {!isAuthenticated && (
+              <span className="block mt-1 text-[12px] text-[#9ca3af]">
+                Pediremos um login rápido antes de processar.
+              </span>
+            )}
           </p>
         </div>
 
         <div
-          className="flex flex-wrap justify-center gap-1.5 px-8"
+          className="flex flex-wrap justify-center gap-1.5 px-8 max-w-[460px]"
           aria-label="Formatos aceitos"
         >
           {['OGG', 'MP3', 'M4A', 'WAV', 'OPUS', 'WEBM'].map((fmt) => (
@@ -140,7 +164,7 @@ export function UploadZone({ onFile, error }: UploadZoneProps) {
               fontFamily: 'var(--font-dm-sans)',
             }}
           >
-            máx. 25 MB
+            até 25 MB
           </span>
         </div>
 

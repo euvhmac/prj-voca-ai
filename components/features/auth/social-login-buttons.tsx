@@ -5,13 +5,17 @@ import { signIn } from 'next-auth/react';
 
 type Provider = 'google' | 'linkedin';
 
-export function SocialLoginButtons() {
+interface SocialLoginButtonsProps {
+  callbackUrl?: string;
+}
+
+export function SocialLoginButtons({ callbackUrl = '/' }: SocialLoginButtonsProps) {
   const [loading, setLoading] = useState<Provider | null>(null);
 
   async function handleSignIn(provider: Provider): Promise<void> {
     setLoading(provider);
     try {
-      await signIn(provider, { callbackUrl: '/' });
+      await signIn(provider, { callbackUrl });
     } catch {
       // signIn redireciona em caso de sucesso — erro aqui é inesperado
       setLoading(null);
