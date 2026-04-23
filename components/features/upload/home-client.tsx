@@ -102,7 +102,7 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
     // Anônimo: split-screen igual ao login — alto impacto visual
     if (!isAuthenticated) {
       return (
-        <div className="flex flex-col md:flex-row md:min-h-[calc(100vh-58px)]">
+        <div className="flex flex-col md:flex-row min-h-screen">
           {/* ── Painel esquerdo — Deep Forest, brand pane ── */}
           <aside
             className="relative overflow-hidden flex flex-col justify-between gap-10 px-7 py-10 md:w-[52%] md:px-12 md:py-14"
@@ -161,12 +161,15 @@ export function HomeClient({ isAuthenticated }: HomeClientProps) {
             aria-live="polite"
           >
             <div className="w-full max-w-[540px] flex flex-col gap-10">
-              <div className="animate-fade-up" style={{ animationDelay: '0.2s' }}>
-                <UploadZone
-                  onFile={handleFile}
-                  error={state.error}
-                  isAuthenticated={isAuthenticated}
-                />
+              <div className="relative animate-fade-up" style={{ animationDelay: '0.2s' }}>
+                <WaveformBackdrop />
+                <div className="relative z-10">
+                  <UploadZone
+                    onFile={handleFile}
+                    error={state.error}
+                    isAuthenticated={isAuthenticated}
+                  />
+                </div>
               </div>
               {showHowItWorks && <HowItWorks />}
             </div>
@@ -312,13 +315,9 @@ function ScrollHint() {
 
 /**
  * Arte ambiente do painel esquerdo da home anônima (Deep Forest).
- * Glows mint + waveform horizontal sutil. `aria-hidden`.
+ * Apenas glows mint radiais — sem barras de waveform. `aria-hidden`.
  */
 function BrandPaneArt() {
-  const bars = [
-    18, 30, 42, 26, 16, 32, 48, 28, 14, 24, 40, 32, 20, 12, 30, 44, 34, 18, 28, 22,
-    16, 32, 46, 28, 20, 14, 26, 38, 32, 18, 28, 42, 34, 22, 16, 30,
-  ];
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       <div
@@ -345,26 +344,6 @@ function BrandPaneArt() {
           filter: 'blur(12px)',
         }}
       />
-      <div
-        className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center gap-[5px] animate-ambient-pan"
-        style={{ opacity: 0.28 }}
-      >
-        {bars.map((h, i) => (
-          <span
-            key={i}
-            className="block rounded-full"
-            style={{
-              width: 2.5,
-              height: h,
-              background:
-                i % 7 === 0
-                  ? 'linear-gradient(180deg, #4ade80 0%, #16a34a 100%)'
-                  : 'rgba(240,253,244,0.55)',
-              opacity: 0.45 + (h / 80),
-            }}
-          />
-        ))}
-      </div>
     </div>
   );
 }
