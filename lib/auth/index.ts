@@ -4,6 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/db/client';
+import { rateLimit } from '@/lib/security/rate-limit';
 import { authConfig } from './config';
 
 // Extende o tipo Session para expor o user.id — necessário porque o tipo padrão
@@ -30,6 +31,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const password = credentials?.password;
 
         if (typeof email !== 'string' || typeof password !== 'string') {
+          return null;
+        }
+
+        // Rate limit por email: 5 tentativas / 15min
+        // Defesa contra brute-force (A07: Identification & Auth Failures).
+        // Usar email como chave evita que um atacante distribuído via IPs
+        // diferentes contorne o limite — o custo é falha de auth para o
+        // usuário legítimo se atacado, mas isso é preferível a permitir
+        // brute-force.
+        const limit = rateLimit({
+          key: `login:${email.toLowerCase()}`,
+          max: 5,
+          windowMs: 15 * 60_000,
+        });
+        if (!limit.allowed) {
           return null;
         }
 
