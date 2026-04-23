@@ -1,6 +1,5 @@
 import type { NextAuthConfig } from 'next-auth';
 import Google from 'next-auth/providers/google';
-import LinkedIn from 'next-auth/providers/linkedin';
 
 // Configuração edge-compatible — sem imports de Prisma/Node.js.
 // Usada pelo middleware.ts para verificar sessão no Edge runtime.
@@ -9,10 +8,6 @@ export const authConfig = {
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    LinkedIn({
-      clientId: process.env.LINKEDIN_CLIENT_ID!,
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
     }),
   ],
   pages: {
