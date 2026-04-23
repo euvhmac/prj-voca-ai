@@ -88,10 +88,13 @@ function NavItem({ href, label, isActive, showDot, children }: NavItemProps) {
 
 function LegalIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M10 9v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="10" cy="6.5" r="0.75" fill="currentColor" />
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path
+        d="M10 2L17 5V10C17 14 13.5 17.5 10 18.5C6.5 17.5 3 14 3 10V5L10 2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -133,13 +136,15 @@ export function Sidebar() {
         <NavItem href="/history" label="Histórico" isActive={pathname === '/history'} showDot>
           <HistoryIcon />
         </NavItem>
+      </nav>
+
+      {/* Footer — legal + avatar + sign out */}
+      <div className="flex flex-col items-center gap-2 mt-auto">
+        {/* Legal & FAQ */}
         <NavItem href="/faq" label="Legal & FAQ" isActive={pathname === '/faq' || pathname === '/privacy' || pathname === '/terms'}>
           <LegalIcon />
         </NavItem>
-      </nav>
 
-      {/* Footer — avatar + sign out */}
-      <div className="flex flex-col items-center gap-2 mt-auto">
         {/* Sign out */}
         <div className="relative group">
           <button
