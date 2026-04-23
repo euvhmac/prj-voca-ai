@@ -1,0 +1,45 @@
+name: Feature Request
+description: Sugerir uma nova funcionalidade ou melhoria
+title: "[feat] "
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado pela sugestão! Descreva a funcionalidade que você gostaria de ver no Voca.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Qual problema esta feature resolve?
+      description: "Exemplo: Quando processo vários áudios, tenho que copiar cada resultado manualmente..."
+      placeholder: Descreva a situação atual e o ponto de atrito.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solução proposta
+      description: Como você imagina que essa feature funcionaria?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+      description: Existe alguma outra forma de resolver o mesmo problema?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Impacto percebido
+      options:
+        - "Alto — afeta significativamente o fluxo principal"
+        - "Médio — melhoria relevante mas não bloqueante"
+        - "Baixo — nice to have"
+    validations:
+      required: true
